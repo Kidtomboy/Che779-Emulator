@@ -1,0 +1,36 @@
+# Java build output
+apps/emulator/source/out/
+apps/emulator/source/stubout/
+apps/emulator/source/jarroot/
+apps/emulator/source/Che779_Emulator.jar
+apps/emulator/source/manifest.txt
+apps/emulator/source/sources.txt
+apps/emulator/source/stubs.txt
+
+# .NET build output
+apps/remoter/source/bin/
+apps/remoter/source/obj/
+apps/remoter/source/*.exe
+apps/remoter/source/*.pdb
+
+# Packaging output
+artifacts/
+dist/
+*.zip
+
+# IDE / OS
+.vs/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# User data / secrets
+*.ini
+*.config.user
+*.keystore
+*.p12
+*.pfx
+*.jks
+*.key
+*.pem
