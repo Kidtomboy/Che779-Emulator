@@ -1,0 +1,3 @@
+Thu muc lib\ giu nguyen nhu ban ZMicroPro goc (AbsoluteLayout.jar neu ban goc co).
+TUY CHON: bo jna.jar (JNA 5.x) vao day -> Clean RAM se dung JNA (psapi!EmptyWorkingSet).
+Neu khong co jna.jar, Clean RAM tu dong dung PowerShell (khong can lam gi them).
