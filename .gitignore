@@ -34,3 +34,8 @@ Thumbs.db
 *.jks
 *.key
 *.pem
+
+# Remoter Linux (Java) build output
+apps/remoter-linux/out/
+apps/remoter-linux/Che779_Remoter.jar
+apps/remoter-linux/sources.txt

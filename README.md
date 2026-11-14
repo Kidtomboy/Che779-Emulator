@@ -93,7 +93,7 @@ cd apps/emulator/source
 ./build.sh
 ```
 
-Windows: `build_emulator.bat` trong cùng thư mục. JAR ra ở `apps/emulator/source/Che779_Emulator.jar`. Cần JDK 9 trở lên (biên dịch ra bytecode Java 8).
+Windows: `build_emulator.bat` hoặc `build_emulator.ps1` trong cùng thư mục. JAR ra ở `apps/emulator/source/Che779_Emulator.jar`. Cần JDK 9 trở lên (biên dịch ra bytecode Java 8).
 
 **Remoter** (Windows):
 
@@ -101,7 +101,9 @@ Windows: `build_emulator.bat` trong cùng thư mục. JAR ra ở `apps/emulator/
 dotnet build apps/remoter/source/Che779Remoter.csproj -c Release
 ```
 
-Hoặc chạy `build_remoter.bat` trong `apps/remoter/source` nếu có `csc.exe` .NET Framework 4.8.
+Hoặc chạy `build_remoter.bat` / `build_remoter.ps1` trong `apps/remoter/source` (dùng `csc.exe` có sẵn của .NET Framework 4.x).
+
+**Remoter Java (Linux):** `cd apps/remoter-linux && ./build.sh` (hoặc `./run.sh`). Windows: `build.cmd` / `build.ps1`.
 
 Kiểm tra bộ đọc IPC: `cd apps/emulator/source && ./run-ipc-tests.sh`.
 
@@ -123,7 +125,8 @@ Chi tiết và quy tắc tương thích: [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTO
 |---|---|
 | `apps/emulator/source/` | Mã Java, tài nguyên, script build của Emulator |
 | `apps/emulator/prebuilt/` | JAR có sẵn từ gói đầu vào (bản gốc, không phải build mới) |
-| `apps/remoter/source/` | Mã C#, file project, script build của Remoter |
+| `apps/remoter/source/` | Mã C#, file project, script build của Remoter (Windows) |
+| `apps/remoter-linux/` | Remoter viết bằng Java/Swing cho Linux (và Windows/macOS có Java) |
 | `docs/` | Kiến trúc, IPC, build, kiểm thử, quyết định, roadmap |
 | `tests/` · `scripts/` | Kiểm tra cấu trúc · đóng gói hai ứng dụng |
 | `.github/workflows/` | CI build từng ứng dụng và đóng gói chung |
@@ -136,7 +139,7 @@ Chi tiết và quy tắc tương thích: [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTO
 - ⚠️ **Remoter chưa được build** trong môi trường rà soát (không có trình biên dịch C#), nên chưa kiểm chứng chạy.
 - ⚠️ Chưa thử runtime trên Windows; chưa kiểm chứng đồng bộ chuột và proxy bằng game thật.
 - Đồng bộ chuột hiện chỉ theo dõi nút trái và tọa độ theo cả cửa sổ (không riêng vùng game).
-- Remoter chỉ chạy trên Windows (dùng WinForms và API Windows).
+- Remoter C# chỉ chạy trên Windows (WinForms). Trên Linux dùng [Remoter Java](apps/remoter-linux/README.md) (ít tính năng hơn, đã thử lõi + giao diện dưới Xvfb).
 
 Phần nào đã xác minh, phần nào chưa: [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md).
 
