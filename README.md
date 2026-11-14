@@ -1,120 +1,159 @@
-# Che779 Project 1 — Emulator V1 + Remoter
+<div align="center">
 
-**Phiên bản ứng dụng nguồn:** `0.0.0.2 custom`  
-**Phiên bản đóng gói repository:** `P1-restructure-2026.11.12` (không thay đổi version ứng dụng)
+# 🪟 Che779 Emulator + Remoter
 
-Project 1 là một bộ công cụ Windows/Java gồm hai ứng dụng phối hợp chặt chẽ:
+**Giả lập J2ME cho Windows: mỗi tab là một cửa sổ riêng, điều khiển tập trung bằng Remoter.**
 
-1. **Che779 Emulator V1** — giả lập J2ME dựa trên MicroEmulator; mỗi phiên game chạy trong một tiến trình JVM riêng và cung cấp IPC server trên loopback.
-2. **Che779 Remoter** — ứng dụng Windows Forms quản lý các tiến trình Emulator, gửi lệnh IPC, quản lý tab/cửa sổ, proxy và đồng bộ chuột.
+Emulator V1 (Java) chạy từng game trong một tiến trình riêng; Remoter (C#) mở, sắp xếp và đồng bộ tất cả các cửa sổ đó.
 
-Đây là **một repository duy nhất** vì hai ứng dụng tạo thành một sản phẩm thống nhất. Source và quy trình build vẫn được tách riêng để dễ debug và kiểm soát.
+[![Windows](https://img.shields.io/badge/Remoter-Windows-0078D6?logo=windows&logoColor=white)](#-chạy-cùng-nhau)
+[![Java 8+](https://img.shields.io/badge/Emulator-Java%208%2B-ED8B00?logo=openjdk&logoColor=white)](#-chạy-cùng-nhau)
+[![Phiên bản](https://img.shields.io/badge/phiên%20bản-0.0.0.2%20custom-blue)](CHANGELOG.md)
+[![Giấy phép](https://img.shields.io/badge/giấy%20phép-Apache%202.0-orange)](LICENSE)
+[![Trạng thái](https://img.shields.io/badge/trạng%20thái-thử%20nghiệm-yellow)](#-trạng-thái-và-giới-hạn)
 
-## Kiến trúc
+[Tính năng](#-tính-năng) · [Chạy](#-chạy-cùng-nhau) · [Build](#-build) · [IPC](#-ipc) · [Cấu trúc](#-cấu-trúc-repo) · [Tài liệu](#-tài-liệu) · [Ghi công](#-ghi-công-và-giấy-phép)
 
-```text
-Che779 Project 1
-├── Che779 Remoter (Windows Forms)
-│   ├── quản lý nhiều tiến trình Emulator
-│   ├── IPC client ───────────────┐
-│   └── đồng bộ chuột Windows    │ TCP 127.0.0.1 / JSON Lines
-│                                ▼
-└── Che779 Emulator V1 (Java) ─ IPC server
-    └── mỗi game = một JVM / cửa sổ riêng
+</div>
+
+---
+
+## 🌐 Hệ sinh thái Che779
+
+Che779 gồm 4 dự án, mỗi dự án một repo. Bạn đang xem **Project 1**.
+
+| # | Dự án | Chạy trên | Dùng khi nào |
+|:-:|---|---|---|
+| 1 | **Che779-Emulator** ← *bạn đang ở đây* | Windows | Mỗi tab một cửa sổ, điều khiển bằng Remoter |
+| 2 | [**Che779-EmulatorV2**](https://github.com/Kidtomboy/Che779-EmulatorV2) | Windows / Java 8+ | Nhiều tab trong một cửa sổ, một tiến trình |
+| 3 | [**Che779-Linux**](https://github.com/Kidtomboy/Che779-Linux) | Linux và Termux | Gói chạy trên Linux và Android (Termux) |
+| 4 | [**Che779-Android**](https://github.com/Kidtomboy/Che779-Android) | Android | Chạy trực tiếp trên điện thoại bằng APK |
+
+> 📌 Repo này từng là tên của bản Android. Bản Android nay nằm ở **Che779-Android**; các link cũ vẫn tự chuyển hướng.
+
+---
+
+## 🧩 Hai ứng dụng, một sản phẩm
+
+```mermaid
+flowchart LR
+    R["🎛️ Che779 Remoter<br/>(Windows Forms)"] -- "IPC · TCP 127.0.0.1<br/>JSON một dòng" --> E1["Emulator V1<br/>game 1 · một JVM"]
+    R --> E2["Emulator V1<br/>game 2 · một JVM"]
+    R --> E3["Emulator V1<br/>game N · một JVM"]
 ```
 
-Giao thức chung được mô tả tại [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTOCOL.md). Không sửa một phía của IPC mà bỏ qua phía còn lại.
+Mỗi game chạy trong một tiến trình Java riêng, nên một game treo không ảnh hưởng các game khác. Đổi lại, nhiều tab thì tốn RAM hơn bản V2.
 
-## Bắt đầu nhanh
+---
 
-### Yêu cầu
+## ✨ Tính năng
 
-- Windows để chạy Remoter.
-- JDK 9 trở lên để chạy build script hiện tại (script dùng `--release 8`, bytecode mục tiêu Java 8).
-- .NET Framework 4.8 Developer Pack / MSBuild hoặc `csc.exe` .NET Framework để build Remoter.
-- JNA là tùy chọn cho một số chức năng Clean RAM; xem [`docs/BUILD_AND_RUN.md`](docs/BUILD_AND_RUN.md).
+### Emulator V1
 
-### Build Emulator
+| | Tính năng | Mô tả |
+|:-:|---|---|
+| 🧹 | **Clean RAM** | Dọn bộ nhớ qua JNA; không có JNA thì dùng PowerShell |
+| 😴 | **Sleep (F12)** | Ngủ thủ công hoặc tự ngủ khi rảnh |
+| 🎞️ | **Giảm FPS / giảm đồ họa** | Tiết kiệm CPU khi treo nhiều game |
+| ⏩ | **Tốc độ game** | Chỉnh theo bước 0,1 |
+| 🔀 | **Thay IP máy chủ** | `server.txt` trong jar game → máy chủ chọn từ `servers.txt` (`ip\|port\|tên`, có thể tải từ URL) → tự nhập |
+| 🌐 | **Proxy** | HTTP (có xác thực) và SOCKS5 |
 
-Linux/macOS/Git Bash:
+### Remoter
+
+| | Tính năng | Mô tả |
+|:-:|---|---|
+| 🪟 | **Quản lý nhiều cửa sổ** | Mở, đóng, khởi động lại từng tab; Hiện/Ẩn trả về đúng vị trí cũ |
+| 🔲 | **Sắp xếp và xem lưới** | Xếp cửa sổ gọn lại, xem nhiều tab cùng lúc |
+| 🖱️ | **Đồng bộ chuột** | Nhấp và kéo ở một cửa sổ được nhân ra các tab, theo tọa độ tỉ lệ |
+| ⌨️ | **Bàn phím ảo** | Gửi phím tới các tab |
+| 🧾 | **Quản lý proxy** | Thêm hàng loạt, kiểm tra; chế độ: không can thiệp / tắt / một proxy chung / mỗi tab một proxy xoay vòng |
+
+Dữ liệu lưu ở `%APPDATA%\Che779\Che779-Emulator` và `%APPDATA%\Che779\Che779-Remoter`, không ghi vào thư mục giải nén.
+
+---
+
+## ▶️ Chạy cùng nhau
+
+1. [Build](#-build) hoặc lấy sẵn `Che779_Emulator.jar` và `Che779_Remoter.exe`.
+2. Đặt `Che779_Emulator.jar` **cạnh** `Che779_Remoter.exe` (Remoter tự dò), hoặc chọn đường dẫn trong Remoter.
+3. Chọn Java (`javaw.exe` / `java.exe`) và file game `.jar` trong Remoter.
+4. Bấm mở tab game.
+
+Phải dùng **cặp cùng phiên bản** (cả hai `0.0.0.2`): giao thức IPC giữa hai bên phải khớp nhau.
+
+---
+
+## 🔧 Build
+
+**Emulator** (Linux/macOS/Git Bash):
 
 ```bash
 cd apps/emulator/source
 ./build.sh
 ```
 
-Windows:
+Windows: `build_emulator.bat` trong cùng thư mục. JAR ra ở `apps/emulator/source/Che779_Emulator.jar`. Cần JDK 9 trở lên (biên dịch ra bytecode Java 8).
 
-```bat
-cd apps\emulator\source
-build_emulator.bat
-```
-
-JAR được tạo tại `apps/emulator/source/Che779_Emulator.jar`.
-
-### Build Remoter
-
-Windows, dùng .NET SDK/MSBuild:
+**Remoter** (Windows):
 
 ```powershell
 dotnet build apps/remoter/source/Che779Remoter.csproj -c Release
 ```
 
-Hoặc chạy `build_remoter.bat` trong `apps/remoter/source` nếu máy có `csc.exe` tương thích.
+Hoặc chạy `build_remoter.bat` trong `apps/remoter/source` nếu có `csc.exe` .NET Framework 4.8.
 
-### Chạy cùng nhau
+Kiểm tra bộ đọc IPC: `cd apps/emulator/source && ./run-ipc-tests.sh`.
 
-1. Build Emulator và Remoter.
-2. Đặt `Che779_Emulator.jar` cạnh `Che779_Remoter.exe` trong thư mục chạy, hoặc chọn đường dẫn JAR trong Remoter.
-3. Chọn Java (`javaw.exe`/`java.exe`) và file game JAR trong Remoter.
-4. Mở phiên game từ Remoter.
+---
 
-Remoter có chức năng tự dò `Che779_Emulator.jar` cạnh file EXE. Cách đóng gói release chính thức sẽ giữ hai file cạnh nhau để giảm thao tác cấu hình.
+## 🔌 IPC
 
-## Cấu trúc repository
+Emulator mở cổng chỉ trên `127.0.0.1`, mặc định từ **7790**. Mỗi lệnh là một dòng JSON và nhận lại một dòng trả lời. Các lệnh hiện có: `ping`, `status`, `version`, `keypress`, `keydown`, `keyup`, `text`, `mouse`, `hide`, `show`, `sleep`, `clean_ram`, `proxy`, `proxy_get`, `screenshot`, `quit` / `close`.
+
+Chi tiết và quy tắc tương thích: [`docs/IPC_PROTOCOL.md`](docs/IPC_PROTOCOL.md). Chưa có xác thực: tiến trình khác trên cùng máy biết cổng thì gửi được lệnh.
+
+> 💡 Vì IPC là TCP + JSON thuần, có thể viết công cụ điều khiển bằng ngôn ngữ khác để chạy trên Linux. Xem [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
+
+---
+
+## 🗂️ Cấu trúc repo
 
 | Đường dẫn | Vai trò |
 |---|---|
-| `apps/emulator/source/` | Source Java, tài nguyên và build scripts của Emulator |
-| `apps/emulator/prebuilt/` | JAR baseline có trong gói đầu vào; không phải output build mới |
-| `apps/remoter/source/` | Source C#, project file và build script của Remoter |
-| `docs/` | Tài liệu kỹ thuật và bộ nhớ dự án có thể bàn giao |
-| `tests/` | Kiểm tra cấu trúc, manifest và các điều kiện tĩnh |
-| `scripts/` | Script đóng gói hai ứng dụng thành một bộ chạy |
-| `.github/workflows/` | CI build từng app và đóng gói artifact tích hợp |
+| `apps/emulator/source/` | Mã Java, tài nguyên, script build của Emulator |
+| `apps/emulator/prebuilt/` | JAR có sẵn từ gói đầu vào (bản gốc, không phải build mới) |
+| `apps/remoter/source/` | Mã C#, file project, script build của Remoter |
+| `docs/` | Kiến trúc, IPC, build, kiểm thử, quyết định, roadmap |
+| `tests/` · `scripts/` | Kiểm tra cấu trúc · đóng gói hai ứng dụng |
+| `.github/workflows/` | CI build từng ứng dụng và đóng gói chung |
 
-## Tài liệu quan trọng
+---
 
-- [Trạng thái dự án](docs/PROJECT_STATE.md)
-- [AI handoff / bộ nhớ bàn giao](docs/AI_HANDOFF.md)
-- [Kiểm kê source và hash baseline](docs/SOURCE_INVENTORY.md)
-- [Kiến trúc](docs/ARCHITECTURE.md)
-- [Giao thức IPC](docs/IPC_PROTOCOL.md)
-- [Build và chạy](docs/BUILD_AND_RUN.md)
-- [Kiểm thử](docs/TESTING.md)
-- [Debug log / vấn đề đã biết](docs/DEBUG_LOG.md)
-- [Quyết định kỹ thuật](docs/DECISIONS.md)
-- [Clone và variant](docs/VARIANTS_AND_CLONES.md)
-- [Roadmap](docs/ROADMAP.md)
-- [Third-party notices và trạng thái license](LICENSES/README.md)
+## 🧭 Trạng thái và giới hạn
 
-## Trạng thái xác minh hiện tại
+- ✅ Emulator **build được** bằng OpenJDK 21 (bytecode Java 8). JAR có sẵn trong `apps/emulator/prebuilt/` đã được chạy thử trên Linux với màn hình ảo và mở được game thật; các lệnh IPC `ping`, `status`, `version`, `keypress`, `hide`/`show`, `screenshot`, `proxy_get` đã được thử và phản hồi đúng.
+- ⚠️ **Remoter chưa được build** trong môi trường rà soát (không có trình biên dịch C#), nên chưa kiểm chứng chạy.
+- ⚠️ Chưa thử runtime trên Windows; chưa kiểm chứng đồng bộ chuột và proxy bằng game thật.
+- Đồng bộ chuột hiện chỉ theo dõi nút trái và tọa độ theo cả cửa sổ (không riêng vùng game).
+- Remoter chỉ chạy trên Windows (dùng WinForms và API Windows).
 
-- Emulator: đã build thành công trong môi trường rà soát bằng OpenJDK 21, với target bytecode Java 8.
-- Remoter: chưa được build trong môi trường rà soát vì không có Windows/.NET Framework compiler.
-- Chưa chạy kiểm thử runtime trên Windows và chưa xác minh đồng bộ chuột/proxy bằng game thực tế.
+Phần nào đã xác minh, phần nào chưa: [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md).
 
-Xem [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md) để biết rõ phần nào đã xác minh và phần nào chưa.
+---
 
-## Đóng góp và fork
+## 📚 Tài liệu
 
-Repository được tổ chức để người khác có thể đọc source, fork và tự build. Bản build do workflow chính thức của repository tạo ra sẽ được phân biệt bằng release/tag và checksum. Việc lựa chọn giấy phép áp dụng cho toàn bộ phần mã Che779 vẫn cần chủ sở hữu xác nhận; xem [`LICENSES/README.md`](LICENSES/README.md).
+[Trạng thái](docs/PROJECT_STATE.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [IPC](docs/IPC_PROTOCOL.md) · [Build và chạy](docs/BUILD_AND_RUN.md) · [Kiểm thử](docs/TESTING.md) · [Vấn đề đã biết](docs/DEBUG_LOG.md) · [Quyết định](docs/DECISIONS.md) · [Clone và biến thể](docs/VARIANTS_AND_CLONES.md) · [Roadmap](docs/ROADMAP.md) · [Bàn giao](docs/AI_HANDOFF.md) · [Kiểm kê nguồn](docs/SOURCE_INVENTORY.md)
 
-## CHE779 maintenance follow-up — 2026-11-13
+---
 
-This archive includes a follow-up maintenance pass:
-- `apps/emulator/source/src/com/che779/emu/IpcServer.java`: replaced regex field scanning with a strict flat-JSON object parser.
-- `apps/emulator/source/test/com/che779/emu/IpcServerJsonTest.java` and `apps/emulator/source/run-ipc-tests.sh`: parser regression tests.
-- `apps/remoter/source/MainForm.Sync.cs`: marshal low-level mouse-hook callbacks to the WinForms UI thread before reading tab/UI state.
+## 🙏 Ghi công và giấy phép
 
-Run `cd apps/emulator/source && ./run-ipc-tests.sh` for the Java IPC parser regression test. The C# Remoter project was not compiled in this environment because no .NET compiler/runtime was available.
+Emulator dựa trên **[MicroEmulator](https://github.com/barteo/microemu)** 3.0.0 (Apache License 2.0); Remoter lấy cảm hứng từ ZMicroPro. Xem [`LICENSE`](LICENSE) và [`LICENSES/`](LICENSES) để biết thông báo bên thứ ba.
+
+<div align="center">
+
+Làm bởi **Cherry** · [Báo lỗi](../../issues) · [Đóng góp](CONTRIBUTING.md) · [Bảo mật](SECURITY.md)
+
+</div>
