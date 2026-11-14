@@ -1,17 +1,16 @@
-# Variants and Clones
+# Bản fork, bản tự build và nhận diện bản chính thức
 
-## Chính sách Project 1
+## Chính sách
 
-- Cho phép fork và tự build.
-- Không cần clone source chỉ để thay đổi tên, icon hoặc cấu hình build.
-- Emulator V1 và Remoter là hai app thành phần, không phải hai clone của nhau.
-- Một clone source chỉ nên được tạo khi có thay đổi logic/vòng đời đủ độc lập và cần bảo trì riêng.
-- Các cấu hình build/branding có thể được thêm thành variant khi có nhu cầu cụ thể.
+- Mọi người được fork và tự build.
+- Không cần tạo bản sao mã nguồn chỉ để đổi tên, biểu tượng hay cấu hình build.
+- Emulator và Remoter là hai ứng dụng thành phần của một sản phẩm, không phải hai bản sao của nhau.
+- Chỉ tách thành bản riêng khi có thay đổi logic đủ độc lập và cần bảo trì riêng.
 
-## Nhận diện artifact
+## Nhận diện bản chính thức
 
-Official artifact cần được phát hành qua workflow/tag của repository chính thức, có version, commit SHA và checksum. Fork/custom build cần được nhận diện là bản tự build hoặc bản tùy biến, không gây nhầm với release chính thức.
+Bản chính thức chỉ được phát hành qua workflow **Phát hành** của repo này khi gắn thẻ `vX.Y.Z`, có số phiên bản (file `VERSION`) và `SHA256SUMS.txt`. Bản fork hoặc tự build cần ghi rõ là bản tự build để không bị nhầm với bản chính thức.
 
 ## Không khóa người dùng
 
-Không thêm cơ chế chống fork/copy source hoặc khóa thiết bị. Tính xác thực của release chính thức dựa trên nguồn phát hành và checksum, không dựa trên việc ngăn người dùng tự build.
+Dự án không có cơ chế chống fork, chống sao chép hay khóa thiết bị. Độ tin cậy của bản chính thức dựa trên nơi phát hành và mã SHA-256.

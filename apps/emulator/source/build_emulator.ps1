@@ -16,7 +16,7 @@ Push-Location asmx; & $jar xf ..\lib\asm-3.2.jar; Pop-Location
 Remove-Item -Recurse -Force asmx\META-INF -ErrorAction SilentlyContinue
 Copy-Item -Recurse -Force asmx\* jarroot\
 Remove-Item -Recurse -Force asmx
-$mf = "Manifest-Version: 1.0`nMain-Class: com.che779.emu.Che779Main`nClass-Path: lib/jna.jar`nImplementation-Title: Che779 Emulator`nImplementation-Version: 0.0.0.2 custom`nCreated-By: Che779 Team`n"
+$mf = "Manifest-Version: 1.0`nMain-Class: com.che779.emu.Che779Main`nClass-Path: lib/jna.jar`nImplementation-Title: Che779 Emulator`nImplementation-Version: 1.2.0`nCreated-By: Che779 Team`n"
 [IO.File]::WriteAllText((Join-Path $PWD 'manifest.txt'), $mf)
 & $jar cfm Che779_Emulator.jar manifest.txt -C jarroot .; if ($LASTEXITCODE -ne 0) { throw 'Dong goi jar that bai.' }
 Write-Host "OK: $PWD\Che779_Emulator.jar"

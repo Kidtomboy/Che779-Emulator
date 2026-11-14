@@ -1,0 +1,35 @@
+name: Báo lỗi
+description: Ứng dụng chạy sai hoặc bị lỗi
+labels: [bug]
+body:
+  - type: dropdown
+    id: thanh-phan
+    attributes:
+      label: Thành phần
+      options: [Emulator, Remoter Windows, Remoter Linux, Chưa rõ]
+    validations: { required: true }
+  - type: input
+    id: phien-ban
+    attributes:
+      label: Phiên bản
+      description: Xem trong Remoter, nút "Phiên bản", hoặc tên file zip đã tải.
+      placeholder: "1.2.0"
+    validations: { required: true }
+  - type: input
+    id: moi-truong
+    attributes:
+      label: Hệ điều hành và Java
+      placeholder: "Windows 11, Java 17 / Ubuntu 24.04, OpenJDK 21"
+    validations: { required: true }
+  - type: textarea
+    id: mo-ta
+    attributes:
+      label: Chuyện gì xảy ra?
+      description: Các bước để lỗi xuất hiện, kết quả mong muốn và kết quả thực tế.
+    validations: { required: true }
+  - type: textarea
+    id: nhat-ky
+    attributes:
+      label: Nhật ký lỗi (nếu có)
+      description: Xóa mật khẩu proxy và thông tin cá nhân trước khi dán.
+      render: text

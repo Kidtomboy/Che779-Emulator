@@ -1,10 +1,10 @@
-# IPC Protocol — hiện trạng 0.0.0.2 custom
+# IPC Protocol — hiện trạng 1.2.0
 
 ## Transport
 
 - TCP, chỉ bind `127.0.0.1`.
 - Một thông điệp JSON trên một dòng UTF-8; một dòng phản hồi JSON tương ứng.
-- Client: `apps/remoter/source/IpcClient.cs`.
+- Client: `apps/remoter-windows/source/IpcClient.cs`.
 - Server: `apps/emulator/source/src/com/che779/emu/IpcServer.java`.
 - Client timeout connect 800 ms, send/receive 1500 ms và thử tối đa hai lần theo source hiện tại.
 - Server dò từ `basePort` đến `basePort + 199`.

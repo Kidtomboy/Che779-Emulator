@@ -7,6 +7,6 @@ command -v jar >/dev/null 2>&1 || { echo "[LOI] Khong thay jar. Cai JDK day du."
 rm -rf out; mkdir out
 javac --release 8 -nowarn -encoding UTF-8 -d out $(find src -name '*.java') 2>&1 | grep -v '^Picked up' || true
 [ -f out/com/che779/remoter/Main.class ] || { echo "[LOI] Bien dich that bai." >&2; exit 1; }
-printf 'Manifest-Version: 1.0\nMain-Class: com.che779.remoter.Main\nImplementation-Title: Che779 Remoter (Java)\nImplementation-Version: 0.0.0.2 linux\n' > out/manifest.txt
+printf 'Manifest-Version: 1.0\nMain-Class: com.che779.remoter.Main\nImplementation-Title: Che779 Remoter (Java)\nImplementation-Version: 1.2.0\n' > out/manifest.txt
 jar cfm Che779_Remoter.jar out/manifest.txt -C out com
 echo "OK: $(pwd)/Che779_Remoter.jar"

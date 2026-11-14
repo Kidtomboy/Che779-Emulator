@@ -9,7 +9,7 @@ New-Item -ItemType Directory out | Out-Null
 $src = Get-ChildItem -Recurse src -Filter *.java | ForEach-Object { $_.FullName }
 & $javac --release 8 -nowarn -encoding UTF-8 -d out $src
 if ($LASTEXITCODE -ne 0) { throw 'Bien dich that bai.' }
-$mf = "Manifest-Version: 1.0`nMain-Class: com.che779.remoter.Main`nImplementation-Title: Che779 Remoter (Java)`nImplementation-Version: 0.0.0.2 linux`n"
+$mf = "Manifest-Version: 1.0`nMain-Class: com.che779.remoter.Main`nImplementation-Title: Che779 Remoter (Java)`nImplementation-Version: 1.2.0`n"
 [IO.File]::WriteAllText((Join-Path $PWD 'out\manifest.txt'), $mf)
 & $jar cfm Che779_Remoter.jar out\manifest.txt -C out com
 if ($LASTEXITCODE -ne 0) { throw 'Dong goi jar that bai.' }

@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
  * Dong bo chuot: thao tac tren khung xem truoc trong Remoter duoc nhan ra cac tab da tick.
  */
 public final class Main {
-    static final String VERSION = "0.0.0.2 linux";
+    static final String VERSION = "1.2.0";
     static final File CFG_DIR = new File(System.getProperty("user.home"), ".che779");
     static final File CFG = new File(CFG_DIR, "remoter.properties");
 
