@@ -1,64 +1,34 @@
-# Build and Run
+# Build và chạy
 
-## Emulator V1
+## Yêu cầu
 
-### Yêu cầu
+- **JDK 9 trở lên** để build Java (`javac --release 8` tạo bytecode Java 8). Đã kiểm chứng với OpenJDK 21.
+- Chạy: **Java 8 trở lên**.
+- Remoter Windows: Windows có .NET Framework 4.x (`csc.exe` có sẵn) hoặc .NET SDK.
 
-- JDK 9+ để chạy script hiện tại vì `javac --release` được hỗ trợ từ JDK 9. Output vẫn nhắm bytecode Java 8.
-- Thư viện `asm-3.2.jar` đã được cung cấp tại `apps/emulator/source/lib/`.
-- JNA là tùy chọn; xem `apps/emulator/source/lib/DOC_TOI_DAY.txt`.
+Cài JDK bằng gói chính thức của hệ điều hành, ví dụ Debian/Ubuntu/Mint: `sudo apt install default-jdk`. Các script build **không cần `unzip`**.
 
-### Linux/macOS/Git Bash
+## Build
 
-```bash
-cd apps/emulator/source
-./build.sh
-```
+| Thành phần | Linux/macOS | Windows |
+|---|---|---|
+| Emulator | `apps/emulator/source/build.sh` | `build_emulator.bat` hoặc `build_emulator.ps1` |
+| Remoter Windows | — | `apps/remoter-windows/source/build_remoter.bat` / `.ps1`, hoặc `dotnet build apps/remoter-windows/source/Che779Remoter.csproj -c Release` |
+| Remoter Linux (Java) | `apps/remoter-linux/build.sh` | `build.cmd` hoặc `build.ps1` |
 
-### Windows
+Kết quả: `Che779_Emulator.jar`, `Che779_Remoter.exe` (hoặc `Che779_Remoter.jar`) ngay trong thư mục nguồn của từng thành phần. Đóng gói Windows tại máy mình: `scripts/package-windows.ps1`.
 
-```bat
-cd apps\emulator\source
-build_emulator.bat
-```
+## Chạy
 
-Output: `apps/emulator/source/Che779_Emulator.jar`.
+**Windows:** để `Che779_Emulator.jar` và `Che779_Remoter.exe` cùng một thư mục, bấm đúp Remoter, chọn Java, chọn file game `.jar`, bấm Bắt đầu.
 
-Lưu ý: `build.sh` hiện dùng `--release 8`; câu mô tả cũ “JDK 8+” chưa chính xác cho mọi JDK 8 compiler. Đã xác minh bằng OpenJDK 21. Cần kiểm tra lại cách build với JDK 8 trước khi ghi hỗ trợ JDK 8 là đã xác nhận.
+**Linux:** `cd apps/remoter-linux && ./run.sh` (tự build nếu chưa có jar). Remoter tự dò `Che779_Emulator.jar` cạnh nó hoặc trong `apps/emulator/`; không thấy thì bấm **Cài đặt**. Máy không có màn hình: `xvfb-run -a ./run.sh`.
 
-## Remoter
+## Dữ liệu và thư viện tùy chọn
 
-### MSBuild / .NET SDK
+- Dữ liệu: `%APPDATA%\Che779\Che779-Emulator`, `%APPDATA%\Che779\Che779-Remoter` (Windows); `~/.che779` (Linux).
+- JNA là tùy chọn: đặt `jna.jar` vào `apps/emulator/source/lib/` thì Clean RAM dùng JNA, không có thì dùng PowerShell. Nếu phân phối kèm JNA, phải kèm đúng giấy phép.
 
-Windows:
+## Bản dựng sẵn
 
-```powershell
-dotnet build apps/remoter/source/Che779Remoter.csproj -c Release
-```
-
-Hoặc mở `Che779Remoter.csproj` bằng Visual Studio. Project target `net48`.
-
-### Compiler csc.exe
-
-Trong `apps/remoter/source`:
-
-```bat
-build_remoter.bat
-```
-
-Script cũ tìm `csc.exe` trong .NET Framework 4.x. Đây là đường build truyền thống; cần xác minh trên Windows thực tế.
-
-## Chạy hai ứng dụng
-
-- Đặt `Che779_Remoter.exe` và `Che779_Emulator.jar` cạnh nhau để Remoter có thể tự dò JAR.
-- Cần cài Java runtime tương thích và chọn `javaw.exe`/`java.exe` trong Remoter.
-- Chọn file game `.jar`.
-- Cấu hình người dùng nằm trong `%APPDATA%\Che779\Che779-Emulator` và `%APPDATA%\Che779\Che779-Remoter`.
-
-## JNA
-
-Build manifest tham chiếu `lib/jna.jar`. Archive hiện không kèm `jna.jar`; tài liệu nguồn ghi JNA tùy chọn cho Clean RAM và có fallback PowerShell phía Remoter. Nếu phân phối JNA, phải bổ sung đúng thư viện, version và license notice vào package.
-
-## Package tích hợp
-
-Dùng `scripts/package-windows.ps1` sau khi có JAR và EXE build. Script tạo một thư mục staging với cả hai file cạnh nhau và ZIP. Không commit thư mục build output vào source repository.
+`apps/emulator/prebuilt/Che779_Emulator.jar` là jar gốc từ gói đầu vào, giữ để tham chiếu, **không** phải bản 1.2.0. Bản 1.2.0 lấy ở mục Releases.

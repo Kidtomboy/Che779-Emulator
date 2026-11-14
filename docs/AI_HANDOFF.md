@@ -16,9 +16,9 @@
 
 - Một repository gồm hai app phối hợp: Che779 Emulator V1 (Java) và Che779 Remoter (C# WinForms).
 - Emulator mỗi game một JVM riêng; Remoter quản lý process và điều khiển qua TCP loopback JSON Lines.
-- Baseline app version: `0.0.0.2 custom`.
+- Baseline app version: `1.2.0`.
 - Emulator source: `apps/emulator/source/`.
-- Remoter source: `apps/remoter/source/`.
+- Remoter source: `apps/remoter-windows/source/`.
 - IPC contract: `docs/IPC_PROTOCOL.md`.
 
 ## Đầu vào đã dùng
@@ -65,5 +65,5 @@ cd ../../.. && python tests/verify_project1.py --jar apps/emulator/source/Che779
 Trên Windows:
 
 ```powershell
-dotnet build apps/remoter/source/Che779Remoter.csproj -c Release
+dotnet build apps/remoter-windows/source/Che779Remoter.csproj -c Release
 ```

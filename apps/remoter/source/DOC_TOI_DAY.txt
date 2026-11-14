@@ -1,2 +1,0 @@
-Che779 Remoter 0.0.0.2 custom (da bo phan Quan ly Proxy).
-Build: chay build_remoter.bat (dung csc.exe cua Windows). Du lieu: %APPDATA%\Che779\Che779-Remoter

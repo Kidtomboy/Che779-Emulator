@@ -1,22 +1,24 @@
-# Contributing
+# Đóng góp cho Che779 Emulator + Remoter
 
-Cảm ơn bạn quan tâm tới Che779 Project 1.
+Cảm ơn bạn đã quan tâm! Tài liệu này giúp bạn gửi thay đổi nhanh và ít phải sửa lại.
 
-## Trước khi thay đổi
+## Trước khi bắt đầu
 
 1. Đọc `docs/PROJECT_STATE.md`, `docs/ARCHITECTURE.md` và `docs/IPC_PROTOCOL.md`.
-2. Xác định thay đổi thuộc Emulator, Remoter hay cả hai.
-3. Nếu thay đổi IPC, cập nhật cả client/server, protocol docs và tests.
-4. Không commit build output, user data, proxy credentials hoặc signing secrets.
+2. Xác định thay đổi thuộc Emulator (`apps/emulator`), Remoter Windows (`apps/remoter-windows`) hay Remoter Linux (`apps/remoter-linux`).
+3. Đổi giao thức IPC thì phải sửa **cả hai phía** (Emulator và Remoter), `docs/IPC_PROTOCOL.md` và test.
+4. Không đưa vào repo: file build, dữ liệu người dùng, mật khẩu proxy, khóa ký.
 
-## Trước khi gửi pull request
+## Cách gửi thay đổi
 
-- Chạy `python tests/verify_project1.py`.
-- Build Emulator nếu có thay đổi Java.
-- Build Remoter trên Windows nếu có thay đổi C#.
-- Ghi thay đổi vào `CHANGELOG.md` và cập nhật tài liệu bị ảnh hưởng.
-- Nêu rõ test nào đã chạy và test nào chưa chạy.
+1. Fork repo, tạo nhánh từ `main`.
+2. Sửa, rồi chạy `python tests/verify_project1.py`.
+3. Build phần bạn sửa: Java bằng `apps/emulator/source/build.sh`, Remoter Linux bằng `apps/remoter-linux/build.sh`, Remoter Windows bằng `dotnet build` trên Windows.
+4. Cập nhật `docs/` và `CHANGELOG.md` nếu hành vi thay đổi.
+5. Mở pull request và điền mẫu có sẵn. Ghi rõ **đã chạy gì, trên hệ điều hành nào, và gì chưa chạy**.
 
 ## Nguyên tắc
 
-Không tuyên bố test thành công nếu chưa thực sự chạy. Không xóa attribution/license header của upstream.
+- Không ghi "đã kiểm tra" khi chưa chạy thật.
+- Giữ nguyên thông báo bản quyền và giấy phép của MicroEmulator (Apache 2.0).
+- Báo lỗi bằng mẫu Issue; thông tin nhạy cảm xem `SECURITY.md`.

@@ -8,10 +8,10 @@ apps/emulator/source/sources.txt
 apps/emulator/source/stubs.txt
 
 # .NET build output
-apps/remoter/source/bin/
-apps/remoter/source/obj/
-apps/remoter/source/*.exe
-apps/remoter/source/*.pdb
+apps/remoter-windows/source/bin/
+apps/remoter-windows/source/obj/
+apps/remoter-windows/source/*.exe
+apps/remoter-windows/source/*.pdb
 
 # Packaging output
 artifacts/
@@ -39,3 +39,6 @@ Thumbs.db
 apps/remoter-linux/out/
 apps/remoter-linux/Che779_Remoter.jar
 apps/remoter-linux/sources.txt
+
+__pycache__/
+*.pyc

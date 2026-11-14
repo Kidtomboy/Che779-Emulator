@@ -1,9 +1,19 @@
-# Security Policy
+# Chính sách bảo mật
 
-## Báo cáo vấn đề
+## Báo lỗi bảo mật
 
-Vui lòng không đăng proxy credentials, dữ liệu cá nhân hoặc file cấu hình chứa bí mật trong issue công khai. Mô tả phiên bản, môi trường, bước tái hiện và log đã loại bỏ thông tin nhạy cảm.
+Nếu bạn tìm thấy lỗ hổng, **đừng đăng công khai** trong Issue. Hãy dùng mục *Security → Report a vulnerability* của repo trên GitHub để báo riêng. Khi báo, ghi rõ phiên bản, hệ điều hành, các bước tái hiện, và xóa mật khẩu proxy hoặc thông tin cá nhân khỏi log.
 
-## Lưu ý bảo mật hiện tại
+## Những điều cần biết về bảo mật hiện tại
 
-IPC hiện chỉ bind `127.0.0.1`, nhưng chưa có authentication token. Các action `quit/close` và `screenshot` có tác động tới tiến trình/file theo quyền người dùng. Không expose IPC port ra mạng công cộng. Các hạn chế còn lại được ghi trong `docs/DEBUG_LOG.md`.
+| Vấn đề | Mức độ | Ghi chú |
+|---|---|---|
+| IPC chưa có xác thực | Trung bình | Cổng chỉ mở trên `127.0.0.1`, nhưng tiến trình khác trên cùng máy biết cổng thì gửi được lệnh (`quit`, `text`, `proxy`, `screenshot`...). |
+| Lệnh `screenshot` ghi file | Trung bình | Ghi ảnh ra đường dẫn do bên gọi chỉ định, theo quyền của người dùng. |
+| Mật khẩu proxy lưu và truyền dạng chữ thường | Trung bình | Lưu trong `proxies.txt`, tham số `-Dche779.proxy`, và lệnh IPC `proxy`. |
+
+Khuyến nghị: không mở cổng IPC ra mạng, không dùng proxy chứa mật khẩu quan trọng trên máy dùng chung. Chi tiết và kế hoạch xử lý nằm ở `docs/DEBUG_LOG.md` và `docs/ROADMAP.md`.
+
+## Tải bản chính thức
+
+Chỉ tải file từ mục **Releases** của repo chính thức và kiểm tra bằng `SHA256SUMS.txt`.

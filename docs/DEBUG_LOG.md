@@ -1,6 +1,6 @@
 # Debug Log / Known Issues
 
-Các mục dưới đây là phát hiện từ review source `0.0.0.2 custom`, chưa phải tất cả đều đã tái hiện runtime. Trạng thái ban đầu: **Open / cần xác minh**.
+Các mục dưới đây là phát hiện từ review source `1.2.0`, chưa phải tất cả đều đã tái hiện runtime. Trạng thái ban đầu: **Open / cần xác minh**.
 
 ## P1 — IPC chưa xác thực và screenshot nhận đường dẫn tùy ý
 

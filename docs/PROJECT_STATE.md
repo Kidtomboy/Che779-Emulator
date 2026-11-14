@@ -1,53 +1,32 @@
-# Project State — Che779 Project 1
+# Trạng thái dự án — Che779 Emulator + Remoter
 
-**Baseline ứng dụng:** `0.0.0.2 custom`  
-**Ngày lập hồ sơ:** 2026-11-12  
-**Nguồn đầu vào:** `Che779_Emulator_0.0.0.2_custom.zip`, `Che779_Remoter_0.0.0.2_custom.zip` và đánh giá độc lập Project 1.
-
-## Mục tiêu
-
-Duy trì Che779 Emulator V1 và Che779 Remoter như hai ứng dụng riêng nhưng phối hợp thành một sản phẩm trong cùng repository.
+**Phiên bản:** `1.2.0` (file `VERSION`)
 
 ## Thành phần
 
-| Thành phần | Công nghệ | Trạng thái source |
-|---|---|---|
-| Emulator V1 | Java / Swing / MicroEmulator 3.0.0 | Đã nhập source baseline |
-| Remoter | C# / Windows Forms / .NET Framework 4.8 | Đã nhập source baseline |
-| IPC | TCP loopback + JSON Lines | Đã ghi tài liệu hợp đồng hiện tại |
+| Thành phần | Công nghệ | Thư mục | Trạng thái |
+|---|---|---|---|
+| Emulator | Java / Swing / MicroEmulator 3.0.0 | `apps/emulator` | Chủ dự án xác nhận chạy tốt trên Windows; Claude đã chạy trên Linux |
+| Remoter Windows | C# / Windows Forms / .NET Framework 4.8 | `apps/remoter-windows` | Chủ dự án xác nhận chạy tốt trên Windows; Claude chưa build được (không có trình biên dịch C#) |
+| Remoter Linux | Java / Swing | `apps/remoter-linux` | Lõi và giao diện đã chạy thử dưới Xvfb với game thật |
+| IPC | TCP loopback + JSON một dòng | — | 17 lệnh, xem `IPC_PROTOCOL.md` |
 
-## Đã thực hiện trong revision tái cấu trúc
+## Đã có
 
-- [x] Gom hai app vào cùng repository.
-- [x] Tách source Emulator và Remoter.
-- [x] Giữ JAR đầu vào làm binary baseline riêng.
-- [x] Viết lại README theo cấu trúc và source hiện có, không lấy README cũ làm sự thật tuyệt đối.
-- [x] Ghi tài liệu kiến trúc, IPC, build, test, debug, quyết định và roadmap.
-- [x] Thêm kiểm tra tĩnh repository.
-- [x] Thêm workflow build riêng hai ứng dụng và đóng gói artifact chung.
-- [x] Lập AI handoff và kiểm kê hash baseline để chuyển giao ngữ cảnh.
-- [x] Build Emulator bằng JDK 21 với `--release 8` thành công.
+- Phát hành tự động: gắn thẻ `vX.Y.Z` → zip Windows, zip Linux, `SHA256SUMS.txt`.
+- CI kiểm tra cấu trúc và build cả 3 thành phần.
+- Bộ file build đủ cho cả hai hệ: `.sh` (Linux), `.bat`/`.cmd` và `.ps1` (Windows).
 
-## Chưa xác minh
+## Chưa kiểm chứng
 
-- [ ] Build Remoter bằng MSBuild/.NET Framework trên Windows.
-- [ ] Chạy Remoter và mở Emulator từ Remoter trên Windows.
-- [ ] Test vòng đời start/stop/crash/restart của nhiều JVM.
-- [ ] Test IPC thực tế cho tất cả action.
-- [ ] Test proxy, mouse sync và screenshot với game thật.
-- [ ] Test package ZIP trên máy Windows sạch.
+Xem danh sách đầy đủ ở [TESTING](TESTING.md). Tóm tắt: workflow Phát hành chưa chạy thật, các script Windows mới chưa chạy trên Windows, Remoter Linux chưa thử với trình quản lý cửa sổ thật hoặc nhiều tab.
 
-## Điều kiện để đánh dấu Project 1 hoàn tất
+## Điều kiện để coi là hoàn tất
 
-1. CI build thành công cả Emulator và Remoter.
-2. Gói phát hành chứa `Che779_Remoter.exe` và `Che779_Emulator.jar` cạnh nhau.
-3. Remoter mở được ít nhất một phiên Emulator và điều khiển được qua IPC.
-4. Các kiểm thử tối thiểu về IPC, đóng tiến trình và đường dẫn game/JAR đạt.
-5. Các rủi ro bảo mật và thread-safety mức cao được xử lý hoặc Cherry chấp thuận bằng quyết định có ghi nhận.
-6. README, changelog và project state phản ánh đúng release được xác minh.
+1. Workflow Phát hành chạy xanh và zip chạy được trên máy sạch.
+2. Remoter Linux thử xong trên một máy Linux có màn hình thật.
+3. Rủi ro bảo mật mức cao (IPC không xác thực, mật khẩu proxy) được xử lý hoặc chủ dự án chấp nhận có ghi lại.
 
 ## Nguồn sự thật
 
-- Source code và commit là bằng chứng về implementation.
-- CI logs và test reports là bằng chứng về build/test.
-- File này chỉ tóm tắt trạng thái; khi mâu thuẫn phải kiểm tra source và workflow thực tế.
+Mã nguồn và commit là bằng chứng về cách làm; log CI là bằng chứng về build. File này chỉ tóm tắt — khi mâu thuẫn, tin mã nguồn và CI.

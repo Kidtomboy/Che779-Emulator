@@ -1,31 +1,31 @@
-# Testing
+# Kiểm thử
 
-## Kiểm tra tĩnh repository
+## Tự động (CI, mỗi lần push)
 
-Từ root:
+| Việc | Chạy ở đâu |
+|---|---|
+| `python tests/verify_project1.py`: cấu trúc repo, 17 lệnh IPC còn đủ, kiểm tra manifest jar | Linux |
+| Build Emulator (JDK 21, bytecode Java 8) | Linux |
+| Build Remoter Linux (Java) | Linux |
+| Build Remoter Windows (`dotnet build`, .NET Framework 4.8) | Windows |
 
-```bash
-python tests/verify_project1.py
-```
+Chạy tay: `python tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar`.
 
-Nếu muốn kiểm tra JAR vừa build:
+## Đã kiểm chứng
 
-```bash
-python tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar
-```
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Emulator + Remoter Windows chạy trên Windows | Chủ dự án tự chạy (đã sửa file build của mình) | Chạy tốt |
+| Emulator trên Linux (màn hình ảo Xvfb) với game thật | Claude chạy | Mở được game |
+| IPC: `ping`, `status`, `version`, `keypress`, `hide/show`, `screenshot`, `proxy_get` | Claude gửi lệnh tới Emulator đang chạy | Phản hồi đúng |
+| Remoter Linux: mở tab, ping, status, phím, chuột, ẩn/hiện, ngủ, dọn RAM, chụp, đóng | Claude chạy dưới Xvfb với game thật | Đúng |
+| Remoter Linux: giao diện hiển thị, khung xem trước có hình game | Chụp màn hình Xvfb | Đúng |
 
-## Kiểm thử cần có trên Windows
+## Chưa kiểm chứng
 
-- Build Remoter bằng MSBuild và `csc.exe` (hai đường build nếu còn hỗ trợ cả hai).
-- Khởi chạy Remoter, chọn Java/JAR/game và mở một phiên.
-- Mở nhiều phiên; kiểm tra port assignment và thông tin `CHE779_PORT`.
-- Gửi `ping`, `status`, `version`, keypress, text, sleep, show/hide và quit.
-- Dừng/crash một JVM và xác minh Remoter cập nhật trạng thái đúng.
-- Kiểm tra proxy trước và sau khi mở phiên.
-- Kiểm tra mouse sync với cửa sổ khác kích thước/aspect ratio.
-- Kiểm tra screenshot path và lỗi quyền ghi.
-- Chạy thử trên máy Windows sạch, không có source tree.
+- Các file `build.cmd`, `build.ps1` và `package-windows.ps1` chưa chạy trên Windows.
+- Workflow **Phát hành** chưa chạy thật lần nào (sẽ biết khi gắn thẻ đầu tiên).
+- Remoter Linux với trình quản lý cửa sổ thật, nhiều tab cùng lúc, Wayland, Termux.
+- Proxy, đồng bộ chuột với nhiều tab khác kích thước, nhiều JVM bị thoát đột ngột.
 
-## Giới hạn
-
-Kiểm tra tĩnh không thay thế runtime integration test. Không đánh dấu test Windows là passed nếu chưa có log hoặc kết quả thực tế.
+Không đánh dấu một mục là đã kiểm chứng khi chưa có kết quả chạy thật.

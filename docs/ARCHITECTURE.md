@@ -31,7 +31,7 @@ Windows desktop
 
 ## Remoter
 
-- Entry point: `apps/remoter/source/Program.cs`.
+- Entry point: `apps/remoter-windows/source/Program.cs`.
 - UI và điều phối: `MainForm.cs`, `MainForm.Logic.cs`, `MainForm.Extras.cs`, `MainForm.Sync.cs`.
 - `EmuTab` giữ trạng thái process và cổng IPC của một phiên.
 - `IpcClient` gửi JSON line tới `127.0.0.1`.
@@ -57,3 +57,7 @@ Windows desktop
 - IPC parser là parser regex tự viết, không phải JSON parser đầy đủ.
 - Server tạo thread cho từng client, chưa giới hạn số client/độ dài dòng và không đặt read timeout.
 - `MainForm.Sync` có đường gọi đọc WinForms controls từ thread hook; cần kiểm tra và chuyển snapshot về UI thread.
+
+## Remoter Linux (Java)
+
+`apps/remoter-linux` có `Core` (quản lý tiến trình và gửi lệnh IPC, không phụ thuộc giao diện), `Ipc` (máy khách JSON một dòng) và `Main` (giao diện Swing). Đồng bộ chuột/phím làm trên khung xem trước của Remoter, không hook toàn cục vào cửa sổ Emulator.

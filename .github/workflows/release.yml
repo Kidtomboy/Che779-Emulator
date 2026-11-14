@@ -1,0 +1,115 @@
+name: Phát hành
+
+# Gắn thẻ dạng v1.2.0 (hoặc bấm chạy tay) để tự build và đưa file tải về vào trang Releases.
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  emulator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - run: bash ./build.sh
+        working-directory: apps/emulator/source
+      - run: python3 tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: emulator-jar
+          path: apps/emulator/source/Che779_Emulator.jar
+          if-no-files-found: error
+
+  remoter-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - run: bash ./build.sh
+        working-directory: apps/remoter-linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remoter-linux-jar
+          path: apps/remoter-linux/Che779_Remoter.jar
+          if-no-files-found: error
+
+  remoter-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
+      - run: dotnet build apps/remoter-windows/source/Che779Remoter.csproj --configuration Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remoter-exe
+          path: apps/remoter-windows/source/bin/Release/net48/Che779_Remoter.exe
+          if-no-files-found: error
+
+  dong-goi:
+    name: Đóng gói và tạo mã SHA-256
+    needs: [ emulator, remoter-linux, remoter-windows ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: build }
+      - name: Tạo file zip
+        run: |
+          VER=$(cat VERSION)
+          mkdir -p out
+          # --- Windows: Emulator + Remoter ---
+          W="Che779-Emulator-$VER-Windows"
+          mkdir -p "$W"
+          cp build/emulator-jar/Che779_Emulator.jar build/remoter-exe/Che779_Remoter.exe "$W/"
+          cat > "$W/DOC-TOI-DAY.txt" <<EOF
+          Che779 Emulator + Remoter $VER cho Windows
+
+          1. Cần Java 8 trở lên (https://adoptium.net).
+          2. Giữ Che779_Emulator.jar và Che779_Remoter.exe CÙNG MỘT THƯ MỤC.
+          3. Bấm đúp Che779_Remoter.exe, chọn file game .jar rồi bấm Bắt đầu.
+
+          Hướng dẫn đầy đủ: https://github.com/Kidtomboy/Che779-Emulator
+          EOF
+          zip -qr "out/$W.zip" "$W"
+          # --- Linux: Emulator + Remoter Java ---
+          L="Che779-Remoter-$VER-Linux"
+          mkdir -p "$L"
+          cp build/emulator-jar/Che779_Emulator.jar build/remoter-linux-jar/Che779_Remoter.jar "$L/"
+          printf '#!/usr/bin/env bash\ncd "$(dirname "$0")"\nexec java -jar Che779_Remoter.jar "$@"\n' > "$L/chay.sh"
+          chmod +x "$L/chay.sh"
+          cat > "$L/DOC-TOI-DAY.txt" <<EOF
+          Che779 Remoter (Java) $VER cho Linux
+
+          1. Cài Java 8 trở lên, ví dụ: sudo apt install default-jre
+          2. Giữ Che779_Emulator.jar và Che779_Remoter.jar CÙNG MỘT THƯ MỤC.
+          3. Chạy: ./chay.sh   (hoặc ./chay.sh /duong/dan/game.jar)
+
+          Hướng dẫn đầy đủ: https://github.com/Kidtomboy/Che779-Emulator
+          EOF
+          zip -qr "out/$L.zip" "$L"
+      - name: Tạo SHA256SUMS (làm SAU CÙNG, trên đúng file sẽ phát hành)
+        run: |
+          cd out
+          sha256sum *.zip > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phat-hanh
+          path: out/*
+      - name: Đưa lên trang Releases
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*
+          generate_release_notes: false
+          body: |
+            ## Che779 Emulator + Remoter ${{ github.ref_name }}
+            Tải file `.zip` đúng hệ điều hành của bạn, giải nén rồi chạy theo `DOC-TOI-DAY.txt`.
+            Kiểm tra file tải về bằng `SHA256SUMS.txt`. Chi tiết thay đổi: xem `CHANGELOG.md`.

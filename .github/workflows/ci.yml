@@ -1,9 +1,8 @@
-name: Project 1 CI
+name: Kiểm tra (CI)
 
 on:
   push:
-    branches: [ main, master ]
-    tags: [ 'project1-v*' ]
+    branches: [ main ]
   pull_request:
   workflow_dispatch:
 
@@ -11,107 +10,49 @@ permissions:
   contents: read
 
 jobs:
-  validate:
-    name: Validate repository and IPC inventory
+  kiem-tra-tinh:
+    name: Kiểm tra cấu trúc repo
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - name: Static repository checks
-        run: python tests/verify_project1.py
+        with: { python-version: '3.x' }
+      - run: python tests/verify_project1.py
 
-  build-emulator:
-    name: Build Emulator V1 (Java)
-    needs: validate
+  emulator:
+    name: Build Emulator (Java)
+    needs: kiem-tra-tinh
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-      - name: Build JAR
+        with: { distribution: temurin, java-version: '21' }
+      - run: bash ./build.sh
         working-directory: apps/emulator/source
-        run: bash ./build.sh
-      - name: Verify built JAR
-        run: python tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar
-      - uses: actions/upload-artifact@v4
-        with:
-          name: emulator-jar
-          path: apps/emulator/source/Che779_Emulator.jar
-          if-no-files-found: error
+      - run: python tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar
 
-  build-remoter:
-    name: Build Remoter (.NET Framework 4.8)
-    needs: validate
+  remoter-linux:
+    name: Build Remoter Linux (Java)
+    needs: kiem-tra-tinh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - run: bash ./build.sh
+        working-directory: apps/remoter-linux
+
+  remoter-windows:
+    name: Build Remoter Windows (C#)
+    needs: kiem-tra-tinh
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-      - name: Build Remoter
-        run: dotnet build apps/remoter/source/Che779Remoter.csproj --configuration Release
-      - name: Verify executable exists
+        with: { dotnet-version: '8.0.x' }
+      - run: dotnet build apps/remoter-windows/source/Che779Remoter.csproj --configuration Release
+      - name: Kiểm tra file .exe
         shell: pwsh
         run: |
-          $exe = 'apps/remoter/source/bin/Release/net48/Che779_Remoter.exe'
-          if (!(Test-Path $exe)) { throw "Remoter executable not found: $exe" }
-      - uses: actions/upload-artifact@v4
-        with:
-          name: remoter-exe
-          path: apps/remoter/source/bin/Release/net48/Che779_Remoter.exe
-          if-no-files-found: error
-
-  package:
-    name: Package integrated Windows apps
-    needs: [ build-emulator, build-remoter ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: emulator-jar
-          path: package
-      - uses: actions/download-artifact@v4
-        with:
-          name: remoter-exe
-          path: package
-      - name: Create integrated ZIP and checksums
-        run: |
-          mkdir -p staging/Che779-Project1-Windows
-          cp package/Che779_Emulator.jar staging/Che779-Project1-Windows/
-          cp package/Che779_Remoter.exe staging/Che779-Project1-Windows/
-          cat > staging/Che779-Project1-Windows/README.txt <<'EOF'
-          Che779 Project 1 - Windows package
-          Contains Che779 Remoter and Che779 Emulator V1.
-          Keep both files in the same directory. Configure Java and game JAR in Remoter.
-          Application baseline: 0.0.0.2 custom
-          EOF
-          cd staging/Che779-Project1-Windows
-          sha256sum Che779_Emulator.jar Che779_Remoter.exe > SHA256SUMS.txt
-          cd ../..
-          cd staging && zip -r ../Che779-Project1-Windows.zip Che779-Project1-Windows
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Che779-Project1-Windows
-          path: Che779-Project1-Windows.zip
-          if-no-files-found: error
-
-  github-release:
-    name: Publish tagged release
-    if: startsWith(github.ref, 'refs/tags/project1-v')
-    needs: package
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: Che779-Project1-Windows
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: Che779-Project1-Windows.zip
-          generate_release_notes: true
+          $exe = 'apps/remoter-windows/source/bin/Release/net48/Che779_Remoter.exe'
+          if (!(Test-Path $exe)) { throw "Không thấy $exe" }

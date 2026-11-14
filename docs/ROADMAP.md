@@ -30,3 +30,12 @@
 - [ ] Tách proxy/macro/layout services khi có test bảo vệ.
 - [ ] Thêm test tự động cho protocol và lifecycle.
 - [ ] Chọn và xác nhận license chính thức cho phần code Che779.
+
+## Đã làm trong 1.2.0
+
+- Remoter Linux (Java/Swing); workflow Phát hành; bộ script build đủ Windows và Linux.
+
+## Tiếp theo
+
+- Remoter Linux: xếp cửa sổ, xem lưới, quản lý proxy hàng loạt, hẹn giờ đóng, tự mở lại tab.
+- IPC: thêm token xác thực và giới hạn đường dẫn `screenshot`.

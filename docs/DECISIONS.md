@@ -4,7 +4,7 @@
 
 - **Quyết định:** Emulator V1 và Remoter nằm trong cùng repository.
 - **Lý do:** hai app tạo thành một sản phẩm; Remoter phụ thuộc giao thức và cách khởi chạy Emulator.
-- **Cách thực hiện:** `apps/emulator/` và `apps/remoter/` tách source/build riêng; tài liệu IPC ở cấp repo.
+- **Cách thực hiện:** `apps/emulator/` và `apps/remoter-windows/` tách source/build riêng; tài liệu IPC ở cấp repo.
 
 ## D-002 — Không dùng README cũ làm nguồn sự thật
 
