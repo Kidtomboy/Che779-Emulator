@@ -39,3 +39,7 @@
 
 - Remoter Linux: xếp cửa sổ, xem lưới, quản lý proxy hàng loạt, hẹn giờ đóng, tự mở lại tab.
 - IPC: thêm token xác thực và giới hạn đường dẫn `screenshot`.
+
+## 1.3.0 — chia repo theo nền tảng (quyết định của Cherry 15/11/2026)
+Xem `DECISIONS.md`. Bản 1.2.0 được phát hành trước, không đổi cấu trúc.
+- **Việc của repo này ở 1.3.0:** bỏ `apps/remoter-linux` (chuyển sang P3); giữ `apps/emulator`, `apps/remoter-windows`; cập nhật README/docs/workflow, `tests/verify_project1.py`.
