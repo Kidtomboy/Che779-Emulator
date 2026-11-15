@@ -24,7 +24,7 @@ SHA-256: `449cff51259336a693167ce6d8752519273313c7edd8fd0ec0f6fe65d0349be0`
 
 ## Build comparison
 
-A fresh build was performed with OpenJDK 21 using the repository's `build.sh` (`javac --release 8`). The generated JAR and supplied baseline JAR contained:
+A fresh build was performed with OpenJDK 21 using the repository's `.github/scripts/build-emulator.sh` (`javac --release 8`). The generated JAR and supplied baseline JAR contained:
 
 - 565 entries each.
 - 0 entries present only in either JAR.

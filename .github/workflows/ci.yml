@@ -27,20 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '21' }
-      - run: bash ./build.sh
-        working-directory: apps/emulator/source
+      - run: bash .github/scripts/build-emulator.sh
+      - run: bash tests/run-ipc-tests.sh
       - run: python tests/verify_project1.py --jar apps/emulator/source/Che779_Emulator.jar
-
-  remoter-linux:
-    name: Build Remoter Linux (Java)
-    needs: kiem-tra-tinh
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: '21' }
-      - run: bash ./build.sh
-        working-directory: apps/remoter-linux
 
   remoter-windows:
     name: Build Remoter Windows (C#)
@@ -56,3 +45,16 @@ jobs:
         run: |
           $exe = 'apps/remoter-windows/source/bin/Release/net48/Che779_Remoter.exe'
           if (!(Test-Path $exe)) { throw "Không thấy $exe" }
+
+  emulator-windows:
+    name: Build Emulator (build_emulator.ps1, Windows)
+    needs: kiem-tra-tinh
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - shell: pwsh
+        run: ./apps/emulator/source/build_emulator.ps1
+      - shell: pwsh
+        run: if (!(Test-Path apps/emulator/source/Che779_Emulator.jar)) { throw "Không thấy jar" }

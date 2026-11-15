@@ -12,14 +12,12 @@ REQUIRED = [
     "docs/README.md", "docs/AI_HANDOFF.md", "docs/ARCHITECTURE.md", "docs/BUILD_AND_RUN.md",
     "docs/DEBUG_LOG.md", "docs/DECISIONS.md", "docs/IPC_PROTOCOL.md", "docs/PROJECT_STATE.md",
     "docs/ROADMAP.md", "docs/SOURCE_INVENTORY.md", "docs/TESTING.md", "docs/VARIANTS_AND_CLONES.md",
-    "apps/emulator/source/build.sh",
+    ".github/scripts/build-emulator.sh", "apps/emulator/source/build_emulator.ps1", "apps/emulator/source/build_emulator.bat",
     "apps/emulator/source/src/com/che779/emu/Che779Main.java",
     "apps/emulator/source/src/com/che779/emu/IpcServer.java",
     "apps/remoter-windows/source/Che779Remoter.csproj",
     "apps/remoter-windows/source/Program.cs",
     "apps/remoter-windows/source/IpcClient.cs",
-    "apps/remoter-linux/build.sh",
-    "apps/remoter-linux/src/com/che779/remoter/Main.java",
     ".github/workflows/ci.yml", ".github/workflows/release.yml",
 ]
 ACTIONS = [

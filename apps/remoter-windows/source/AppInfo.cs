@@ -3,16 +3,16 @@ using System.IO;
 using System.Reflection;
 
 [assembly: AssemblyTitle("Che779 Remoter")]
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyInformationalVersion("1.3.0")]
 
 namespace Che779.Remoter
 {
     /// <summary>Phien ban + thu muc du lieu (%APPDATA%\\Che779\\...). Khong luu gi canh file exe.</summary>
     internal static class AppInfo
     {
-        public const string Version = "1.2.0";
+        public const string Version = "1.3.0";
 
         public static readonly string Root = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Che779");

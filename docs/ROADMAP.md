@@ -31,15 +31,8 @@
 - [ ] Thêm test tự động cho protocol và lifecycle.
 - [ ] Chọn và xác nhận license chính thức cho phần code Che779.
 
-## Đã làm trong 1.2.0
+## Đã làm trong 1.3.0
+- Repo chỉ còn Windows; Remoter Linux chuyển sang Che779-Linux; workflow Phát hành build trên Windows và tạo `SHA256SUMS.txt`.
 
-- Remoter Linux (Java/Swing); workflow Phát hành; bộ script build đủ Windows và Linux.
-
-## Tiếp theo
-
-- Remoter Linux: xếp cửa sổ, xem lưới, quản lý proxy hàng loạt, hẹn giờ đóng, tự mở lại tab.
-- IPC: thêm token xác thực và giới hạn đường dẫn `screenshot`.
-
-## 1.3.0 — chia repo theo nền tảng (quyết định của Cherry 15/11/2026)
-Xem `DECISIONS.md`. Bản 1.2.0 được phát hành trước, không đổi cấu trúc.
-- **Việc của repo này ở 1.3.0:** bỏ `apps/remoter-linux` (chuyển sang P3); giữ `apps/emulator`, `apps/remoter-windows`; cập nhật README/docs/workflow, `tests/verify_project1.py`.
+## Có thể làm sau
+- Remoter Windows: xem thêm `docs/DEBUG_LOG.md` (IPC xác thực, mật khẩu proxy…).

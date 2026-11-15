@@ -2,16 +2,17 @@
 
 # 🎮 Che779 Emulator + Remoter
 
-**Giả lập J2ME cho Windows và Linux: mỗi tab là một cửa sổ game riêng, điều khiển tập trung bằng Remoter.**
+**Giả lập J2ME cho Windows: mỗi tab là một cửa sổ game riêng, điều khiển tập trung bằng Remoter.**
+
+> **Nền tảng: Windows.** Quy ước 4 repo: **P1 và P2 = Windows · P3 = Linux · P4 = Android (kèm Termux)**. Bản Linux (kể cả Remoter Linux) nằm ở [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
 
 Emulator (Java) chạy từng game trong một tiến trình riêng; Remoter mở, sắp xếp và đồng bộ tất cả các cửa sổ đó.
-Có Remoter cho **Windows** (C#) và cho **Linux** (Java).
+Remoter viết bằng C# (WinForms) cho Windows.
 
 [![Phiên bản](https://img.shields.io/github/v/release/Kidtomboy/Che779-Emulator?label=phi%C3%AAn%20b%E1%BA%A3n&color=blue)](../../releases/latest)
 [![Lượt tải](https://img.shields.io/github/downloads/Kidtomboy/Che779-Emulator/total?label=l%C6%B0%E1%BB%A3t%20t%E1%BA%A3i&color=brightgreen)](../../releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/Kidtomboy/Che779-Emulator/ci.yml?branch=main&label=CI)](../../actions)
 [![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)](#-tải-về)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](#-tải-về)
 [![Java 8+](https://img.shields.io/badge/Java-8%2B-ED8B00?logo=openjdk&logoColor=white)](#-yêu-cầu-hệ-thống)
 [![Giấy phép](https://img.shields.io/badge/giấy%20phép-Apache%202.0-orange)](LICENSE)
 
@@ -23,17 +24,15 @@ Có Remoter cho **Windows** (C#) và cho **Linux** (Java).
 
 ## 📥 Tải về
 
-Vào mục **[Releases](../../releases/latest)** và tải đúng file cho hệ điều hành của bạn:
+Vào mục **[Releases](../../releases/latest)** và tải file Windows:
 
 | Hệ điều hành | File cần tải | Bên trong có gì |
 |---|---|---|
 | 🪟 **Windows** | `Che779-Emulator-<phiên bản>-Windows.zip` | `Che779_Emulator.jar` + `Che779_Remoter.exe` |
-| 🐧 **Linux** | `Che779-Remoter-<phiên bản>-Linux.zip` | `Che779_Emulator.jar` + `Che779_Remoter.jar` + `chay.sh` |
 
 Giải nén ra **một thư mục**, giữ hai file cạnh nhau. Mỗi bản phát hành có kèm `SHA256SUMS.txt` để bạn kiểm tra file tải về có nguyên vẹn không:
 
 ```bash
-sha256sum -c SHA256SUMS.txt        # Linux
 Get-FileHash <file>.zip -Algorithm SHA256   # Windows PowerShell
 ```
 
@@ -47,10 +46,10 @@ Che779 gồm 4 dự án, mỗi dự án một repo. Bạn đang xem **Project 1*
 
 | # | Dự án | Chạy trên | Dùng khi nào |
 |:-:|---|---|---|
-| 1 | **Che779-Emulator** ← *bạn đang ở đây* | Windows, Linux | Mỗi tab một cửa sổ, điều khiển bằng Remoter |
-| 2 | [**Che779-EmulatorV2**](https://github.com/Kidtomboy/Che779-EmulatorV2) | Windows / Java 8+ | Nhiều tab trong một cửa sổ, một tiến trình |
-| 3 | [**Che779-Linux**](https://github.com/Kidtomboy/Che779-Linux) | Linux và Termux | Một lệnh cài và chạy trên Linux / Android (Termux) |
-| 4 | [**Che779-Android**](https://github.com/Kidtomboy/Che779-Android) | Android | Chạy trực tiếp trên điện thoại bằng APK |
+| 1 | **Che779-Emulator** ← *bạn đang ở đây* | Windows | Mỗi tab một cửa sổ, điều khiển bằng Remoter |
+| 2 | [**Che779-EmulatorV2**](https://github.com/Kidtomboy/Che779-EmulatorV2) | Windows | Nhiều tab trong một cửa sổ, một tiến trình |
+| 3 | [**Che779-Linux**](https://github.com/Kidtomboy/Che779-Linux) | Linux | Gói `.deb` / `.tar.gz` cho Linux, gồm V1 + V2 + Remoter Linux |
+| 4 | [**Che779-Android**](https://github.com/Kidtomboy/Che779-Android) | Android (kèm Termux) | Chạy trực tiếp trên điện thoại bằng APK; Termux chạy V2 |
 
 > 📌 Tên repo này từng là tên của bản Android. Bản Android nay nằm ở **Che779-Android**; các link cũ vẫn tự chuyển hướng.
 
@@ -85,43 +84,25 @@ Che779 gồm 4 dự án, mỗi dự án một repo. Bạn đang xem **Project 1*
 | ⏱️ | **Hẹn giờ, tự mở lại** | Hẹn giờ đóng tab; tự mở lại tab khi thoát |
 | 💾 | **Hồ sơ `.che779`** | Lưu và nạp toàn bộ cấu hình; tách dữ liệu từng tab; giao diện tối |
 
-### Remoter Linux (Java/Swing)
-
-| | Tính năng | Mô tả |
-|:-:|---|---|
-| 🗂️ | **Quản lý tab** | Mở, đóng, mở lại; Hiện/Ẩn, Ngủ/Thức, dọn RAM |
-| 🌐 | **Proxy** | Đặt `host:port[:user:pass]` cho các tab đang chọn |
-| 🖼️ | **Khung xem trước** | Chuột và phím thao tác ở đây được nhân ra các tab đã tick |
-| 📸 | **Chụp màn hình** | Lưu ảnh tab đang chọn |
-
-Remoter Linux gọn hơn bản Windows: **chưa có** xếp cửa sổ, xem lưới, quản lý proxy hàng loạt, macro, hẹn giờ, hồ sơ. Đồng bộ chuột/phím làm ở khung xem trước chứ không hook toàn cục vào cửa sổ game (Linux không cho làm dễ dàng).
-
 ---
 
 ## 🖥️ Yêu cầu hệ thống
 
-| | Windows | Linux |
-|---|---|---|
-| Hệ điều hành | Windows có .NET Framework 4.8 | Bất kỳ distro nào có Java và màn hình đồ họa (X11 hoặc Wayland) |
-| Java | **Java 8 trở lên** | **Java 8 trở lên** |
-| RAM | Tùy game; mỗi tab là một JVM nên cần nhiều RAM hơn Project 2 (đặt RAM tối đa mỗi tab trong Remoter) | Như Windows |
-| Màn hình | Có | Có; không có thì dùng màn hình ảo `xvfb-run` (không nhìn thấy cửa sổ) |
+| | Windows |
+|---|---|
+| Hệ điều hành | Windows có .NET Framework 4.8 |
+| Java | **Java 8 trở lên** (tải từ [Adoptium](https://adoptium.net)) |
+| RAM | Tùy game; mỗi tab là một JVM nên cần nhiều RAM hơn Project 2 (đặt RAM tối đa mỗi tab trong Remoter) |
 
-Cài Java trên Debian/Ubuntu/Mint bằng gói chính thức: `sudo apt install default-jre`. Windows: tải từ [Adoptium](https://adoptium.net).
+Dùng Linux? Xem [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
 
 ---
 
 ## 🚀 Bắt đầu nhanh
 
-**Windows**
 1. Tải `…-Windows.zip`, giải nén ra một thư mục.
 2. Bấm đúp **`Che779_Remoter.exe`**.
 3. Chọn file game `.jar`, đặt số tab, bấm **Bắt đầu**.
-
-**Linux**
-1. Tải `…-Linux.zip`, giải nén, vào thư mục vừa giải nén.
-2. Chạy `./chay.sh` (hoặc `./chay.sh /đường/dẫn/game.jar` để mở sẵn game).
-3. Bấm **Mở game…**, chọn file `.jar`.
 
 ---
 
@@ -134,24 +115,14 @@ Cài Java trên Debian/Ubuntu/Mint bằng gói chính thức: `sudo apt install 
 4. **Đồng bộ:** bật Đồng bộ Phím hoặc Đồng bộ Chuột để thao tác một tab lặp lại ở các tab khác. Phím thật dùng được: mũi tên, Enter = OK, F1/F2 = phím mềm, 0–9, A–Z, Space, Backspace.
 5. **Hồ sơ:** lưu cấu hình thành file `.che779` để nạp lại sau (phải dừng hết tab trước khi nạp).
 
-### Remoter Linux
-| Nút | Việc |
-|---|---|
-| Mở game… / Mở lại / Đóng / Đóng hết | Quản lý tab |
-| Hiện / Ẩn / Ngủ / Thức / Dọn RAM | Gửi tới tab đang chọn (và các tab đã tick nếu bật *Đồng bộ*) |
-| Proxy… | `host:port` hoặc `host:port:user:pass`; để trống = tắt |
-| Chụp… | Lưu ảnh màn hình tab đang chọn |
-| Khung xem trước + bàn phím | Nhấp, kéo chuột và gõ phím ở đây để điều khiển các tab |
-
 ---
 
 ## ⚙️ Cấu hình và nơi lưu dữ liệu
 
-| | Windows | Linux |
-|---|---|---|
-| Dữ liệu Emulator (cấu hình, proxy, máy chủ, RMS) | `%APPDATA%\Che779\Che779-Emulator` | `~/.che779` |
-| Cấu hình Remoter | `%APPDATA%\Che779\Che779-Remoter` | `~/.che779/remoter.properties` |
-| Log từng tab | — | thư mục tạm, `che779-tab<N>.log` |
+| | Vị trí (Windows) |
+|---|---|
+| Dữ liệu Emulator (cấu hình, proxy, máy chủ, RMS) | `%APPDATA%\Che779\Che779-Emulator` |
+| Cấu hình Remoter | `%APPDATA%\Che779\Che779-Remoter` |
 
 Dữ liệu **không** ghi vào thư mục bạn giải nén, nên cập nhật bản mới không mất dữ liệu. Cần JNA cho Clean RAM sâu hơn? Đặt `jna.jar` vào `lib/` cạnh `Che779_Emulator.jar` (tùy chọn).
 
@@ -161,7 +132,7 @@ Dữ liệu **không** ghi vào thư mục bạn giải nén, nên cập nhật 
 
 ```mermaid
 flowchart LR
-    R["🎛️ Remoter<br/>Windows (C#) hoặc Linux (Java)"] -- "IPC · TCP 127.0.0.1<br/>JSON một dòng" --> E1["Emulator<br/>game 1 · một JVM"]
+    R["🎛️ Remoter<br/>Windows (C#)"] -- "IPC · TCP 127.0.0.1<br/>JSON một dòng" --> E1["Emulator<br/>game 1 · một JVM"]
     R --> E2["Emulator<br/>game 2 · một JVM"]
     R --> E3["Emulator<br/>game N · một JVM"]
 ```
@@ -174,13 +145,14 @@ Vì IPC là TCP + JSON thuần, bạn có thể tự viết công cụ điều k
 
 ## 🔧 Build từ mã nguồn
 
-Cần JDK 9 trở lên (build ra bytecode Java 8). Các script build **không cần `unzip`**.
+Cần JDK 9 trở lên (build ra bytecode Java 8).
 
-| Thành phần | Linux/macOS | Windows |
-|---|---|---|
-| Emulator | `apps/emulator/source/build.sh` | `build_emulator.bat` hoặc `build_emulator.ps1` |
-| Remoter Windows | — | `apps/remoter-windows/source/build_remoter.bat` / `.ps1`, hoặc `dotnet build apps/remoter-windows/source/Che779Remoter.csproj -c Release` |
-| Remoter Linux | `apps/remoter-linux/build.sh` (hoặc `run.sh` để build rồi chạy) | `build.cmd` hoặc `build.ps1` |
+| Thành phần | Windows |
+|---|---|
+| Emulator | `apps/emulator/source/build_emulator.bat` hoặc `build_emulator.ps1` |
+| Remoter Windows | `apps/remoter-windows/source/build_remoter.bat` / `.ps1`, hoặc `dotnet build apps/remoter-windows/source/Che779Remoter.csproj -c Release` |
+
+(`.github/scripts/build-emulator.sh` chỉ để CI và repo Che779-Linux build jar, không dành cho người dùng Windows.)
 
 Đóng gói bản Windows ngay trên máy bạn: `scripts/package-windows.ps1`. Kiểm tra cấu trúc repo: `python tests/verify_project1.py`. Chi tiết: [`docs/BUILD_AND_RUN.md`](docs/BUILD_AND_RUN.md).
 
@@ -194,9 +166,7 @@ Chủ dự án phát hành bằng cách gắn thẻ `vX.Y.Z`: workflow **Phát h
 |---|---|
 | Remoter báo *"Chưa chọn đúng file Che779_Emulator.jar"* | Để `Che779_Emulator.jar` cùng thư mục với Remoter, hoặc chọn bằng nút **Duyệt**. |
 | Không mở được game | Kiểm tra đã cài Java 8+ và đã chọn đúng `javaw.exe`/`java` trong Remoter. |
-| Linux: Remoter không tìm thấy Emulator | Bấm **Cài đặt**, chọn `Che779_Emulator.jar`. |
-| Linux: chạy qua SSH/máy chủ không có màn hình | Dùng màn hình ảo: `xvfb-run -a ./chay.sh` (không thấy cửa sổ thật). |
-| Tab báo "Không phản hồi" | Thử **Mở lại**. Trên Linux xem `che779-tab<N>.log` trong thư mục tạm. |
+| Tab báo "Không phản hồi" | Thử **Mở lại**. |
 | Game không vào được mạng | Thử đổi máy chủ hoặc đặt proxy trong menu **Che779** của Emulator. Lỗi mạng còn có thể do chính máy chủ game. |
 | Muốn báo lỗi | Mở [Issue](../../issues/new/choose), ghi phiên bản (nút **Phiên bản** trong Remoter), hệ điều hành và Java. Xóa mật khẩu proxy khỏi log. |
 
@@ -210,7 +180,6 @@ Chủ dự án phát hành bằng cách gắn thẻ `vX.Y.Z`: workflow **Phát h
 - Mật khẩu proxy được lưu và truyền dạng chữ thường.
 - Clean RAM trên Windows chỉ thu nhỏ vùng nhớ hiển thị của tiến trình, không giải phóng bộ nhớ Java thật.
 - Đồng bộ chuột của Remoter Windows theo tọa độ cả cửa sổ; các tab nên cùng kích thước để trùng vị trí.
-- Remoter Linux mới chạy thử dưới màn hình ảo, chưa thử với trình quản lý cửa sổ thật hay Wayland.
 
 Phần nào đã kiểm chứng, phần nào chưa: [`docs/TESTING.md`](docs/TESTING.md).
 
@@ -223,11 +192,10 @@ Che779-Emulator/
 ├─ README.md  CONTRIBUTING.md  SECURITY.md  LICENSE  CHANGELOG.md  VERSION
 ├─ apps/
 │  ├─ emulator/          Emulator (Java) — source/ và prebuilt/
-│  ├─ remoter-windows/   Remoter Windows (C#) — source/
-│  └─ remoter-linux/     Remoter Linux (Java/Swing)
+│  └─ remoter-windows/   Remoter Windows (C#) — source/
 ├─ docs/                 Tài liệu kỹ thuật (có mục lục)
-├─ scripts/              Đóng gói bản Windows
-├─ tests/                Kiểm tra cấu trúc repo
+├─ scripts/              Đóng gói bản Windows (package-windows.ps1)
+├─ tests/                Kiểm tra cấu trúc repo, kiểm thử IPC
 └─ .github/              Workflow CI + Phát hành, mẫu Issue và Pull Request
 ```
 

@@ -6,14 +6,14 @@ body:
     id: thanh-phan
     attributes:
       label: Thành phần
-      options: [Emulator, Remoter Windows, Remoter Linux, Chưa rõ]
+      options: [Emulator, Remoter Windows, Chưa rõ]
     validations: { required: true }
   - type: input
     id: phien-ban
     attributes:
       label: Phiên bản
       description: Xem trong Remoter, nút "Phiên bản", hoặc tên file zip đã tải.
-      placeholder: "1.2.0"
+      placeholder: "1.3.0"
     validations: { required: true }
   - type: input
     id: moi-truong
