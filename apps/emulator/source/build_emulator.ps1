@@ -6,10 +6,12 @@ if ($env:JAVA_HOME) { $javac = Join-Path $env:JAVA_HOME 'bin\javac.exe'; $jar = 
 if (-not (Get-Command $javac -ErrorAction SilentlyContinue)) { throw 'Khong tim thay javac. Cai JDK 8+ va dat JAVA_HOME hoac PATH.' }
 foreach ($d in 'out','stubout','jarroot','asmx') { if (Test-Path $d) { Remove-Item -Recurse -Force $d } }
 New-Item -ItemType Directory out,stubout,jarroot,asmx | Out-Null
-$stubs = Get-ChildItem -Recurse stubs -Filter *.java | ForEach-Object { $_.FullName }
-& $javac --release 8 -nowarn -d stubout $stubs; if ($LASTEXITCODE -ne 0) { throw 'Loi bien dich stubs.' }
-$src = Get-ChildItem -Recurse src -Filter *.java | ForEach-Object { $_.FullName }
-& $javac --release 8 -nowarn -proc:none -encoding UTF-8 -d out -cp "lib\asm-3.2.jar;stubout" $src; if ($LASTEXITCODE -ne 0) { throw 'Loi bien dich ma nguon.' }
+# Windows giới hạn độ dài dòng lệnh: đưa danh sách tệp vào argfile (@tệp), đường dẫn dùng '/' và đặt trong ngoặc kép.
+function Write-ArgFile($dir, $file) { (Get-ChildItem -Recurse $dir -Filter *.java | ForEach-Object { '"' + ($_.FullName -replace '\\','/') + '"' }) | Set-Content -Encoding ASCII $file }
+Write-ArgFile 'stubs' 'stubs.txt'
+& $javac --release 8 -nowarn -d stubout '@stubs.txt'; if ($LASTEXITCODE -ne 0) { throw 'Loi bien dich stubs.' }
+Write-ArgFile 'src' 'sources.txt'
+& $javac --release 8 -nowarn -proc:none -encoding UTF-8 -d out -cp "lib\asm-3.2.jar;stubout" '@sources.txt'; if ($LASTEXITCODE -ne 0) { throw 'Loi bien dich ma nguon.' }
 Copy-Item -Recurse -Force out\* jarroot\
 Copy-Item -Recurse -Force res\* jarroot\
 Push-Location asmx; & $jar xf ..\lib\asm-3.2.jar; Pop-Location
