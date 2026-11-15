@@ -5,7 +5,7 @@ Cảm ơn bạn đã quan tâm! Tài liệu này giúp bạn gửi thay đổi n
 ## Trước khi bắt đầu
 
 1. Đọc `docs/PROJECT_STATE.md`, `docs/ARCHITECTURE.md` và `docs/IPC_PROTOCOL.md`.
-2. Xác định thay đổi thuộc Emulator (`apps/emulator`), Remoter Windows (`apps/remoter-windows`) hay Remoter Linux (`apps/remoter-linux`).
+2. Xác định thay đổi thuộc Emulator (`apps/emulator`) hay Remoter Windows (`apps/remoter-windows`).
 3. Đổi giao thức IPC thì phải sửa **cả hai phía** (Emulator và Remoter), `docs/IPC_PROTOCOL.md` và test.
 4. Không đưa vào repo: file build, dữ liệu người dùng, mật khẩu proxy, khóa ký.
 
@@ -13,7 +13,7 @@ Cảm ơn bạn đã quan tâm! Tài liệu này giúp bạn gửi thay đổi n
 
 1. Fork repo, tạo nhánh từ `main`.
 2. Sửa, rồi chạy `python tests/verify_project1.py`.
-3. Build phần bạn sửa: Java bằng `apps/emulator/source/build.sh`, Remoter Linux bằng `apps/remoter-linux/build.sh`, Remoter Windows bằng `dotnet build` trên Windows.
+3. Build phần bạn sửa: Java bằng `apps/emulator/source/build_emulator.ps1` (Windows) hoặc `.github/scripts/build-emulator.sh` (Linux/CI), Remoter Windows bằng `dotnet build` trên Windows.
 4. Cập nhật `docs/` và `CHANGELOG.md` nếu hành vi thay đổi.
 5. Mở pull request và điền mẫu có sẵn. Ghi rõ **đã chạy gì, trên hệ điều hành nào, và gì chưa chạy**.
 

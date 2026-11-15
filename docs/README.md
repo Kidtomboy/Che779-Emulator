@@ -5,7 +5,7 @@
 | [PROJECT_STATE](PROJECT_STATE.md) | Trạng thái hiện tại: cái gì đã xong, đã kiểm chứng, chưa kiểm chứng |
 | [ARCHITECTURE](ARCHITECTURE.md) | Kiến trúc Emulator, Remoter và cách chúng nối với nhau |
 | [IPC_PROTOCOL](IPC_PROTOCOL.md) | Giao thức điều khiển giữa Remoter và Emulator |
-| [BUILD_AND_RUN](BUILD_AND_RUN.md) | Cách build và chạy trên Windows và Linux |
+| [BUILD_AND_RUN](BUILD_AND_RUN.md) | Cách build và chạy trên Windows |
 | [TESTING](TESTING.md) | Đã kiểm thử gì, còn phải kiểm thử gì |
 | [DEBUG_LOG](DEBUG_LOG.md) | Lỗi và rủi ro đã biết |
 | [DECISIONS](DECISIONS.md) | Các quyết định thiết kế và lý do |

@@ -2,7 +2,9 @@
 
 Chỉ ghi những gì **phiên bản hiện tại** đang làm được. Lịch sử các bản trước không còn được lưu ở đây.
 
-## [1.2.0] — Bản phát hành
+## [1.3.0] — Bản phát hành (chỉ Windows)
+
+> Từ 1.3.0 repo này chỉ dành cho Windows. Bản Linux (kể cả Remoter Linux) nằm ở Che779-Linux.
 
 ### Che779 Emulator (Java)
 - Chạy game J2ME `.jar`, mỗi game một tiến trình Java riêng, dựa trên MicroEmulator 3.0.0.
@@ -19,10 +21,5 @@ Chỉ ghi những gì **phiên bản hiện tại** đang làm được. Lịch 
 - Macro phím (ghi rồi phát lặp), chụp màn hình, hẹn giờ đóng, tự mở lại tab khi thoát.
 - Lưu và nạp hồ sơ `.che779`; tách dữ liệu từng tab; giao diện tối.
 
-### Che779 Remoter — Linux (Java/Swing, mới)
-- Mở, đóng, mở lại tab; Hiện/Ẩn, Ngủ/Thức, dọn RAM, đặt proxy, chụp màn hình.
-- Khung xem trước: chuột và phím thao tác ở đây được nhân ra các tab đã tick.
-- Chạy được cả trên Windows và macOS có Java.
-
 ### Phát hành
-- Mỗi lần gắn thẻ `vX.Y.Z`, GitHub tự build và tạo `Che779-Emulator-<phiên bản>-Windows.zip`, `Che779-Remoter-<phiên bản>-Linux.zip` và `SHA256SUMS.txt`.
+- Gắn thẻ `vX.Y.Z` → GitHub Actions build **trên Windows** (`build_emulator.ps1` + `dotnet build`) và tạo `Che779-Emulator-<phiên bản>-Windows.zip` cùng `SHA256SUMS.txt` (mã băm tính sau cùng trên đúng file zip).

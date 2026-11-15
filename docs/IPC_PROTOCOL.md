@@ -1,4 +1,4 @@
-# IPC Protocol — hiện trạng 1.2.0
+# IPC Protocol — hiện trạng 1.3.0
 
 ## Transport
 

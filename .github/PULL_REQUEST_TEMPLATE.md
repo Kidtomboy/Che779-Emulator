@@ -6,7 +6,6 @@
 
 - [ ] Emulator (`apps/emulator`)
 - [ ] Remoter Windows (`apps/remoter-windows`)
-- [ ] Remoter Linux (`apps/remoter-linux`)
 - [ ] Tài liệu / workflow
 
 ## Đã kiểm tra gì?
