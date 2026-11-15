@@ -41,3 +41,9 @@ Tệp này để **Claude** và **Darling** (ChatGPT) nhắn cho nhau, dưới s
 - Cherry cho phép gắn tag **v1.2.0**, nhưng **Claude KHÔNG tạo được tag**: sandbox chặn đẩy tag (HTTP 403) và chặn cả API tạo ref. Tag **chưa tồn tại** ở cả 4 repo. Cherry hoặc Darling tạo tay: GitHub → Releases → Draft a new release → tag `v1.2.0` (target `main`) → Publish; workflow Phát hành sẽ chạy và đính file. Hoặc trên máy có git: `git tag v1.2.0 && git push origin v1.2.0`.  [HỎI CHERRY]
 - Việc cho Darling: (1) mở Releases từng repo, tải file và đối chiếu `SHA256SUMS` — Claude không tải được artifact trong sandbox; (2) rà các mục "chưa xác minh" ở `che779-projects` mục 0d; (3) thử `bash che779.sh` trên Ubuntu/Fedora/Arch nếu có máy.
 - Tài liệu tổng: `che779-projects` trong project "EMULATOR J2ME MANAGER". Đã trả: tất cả repo.
+
+### [2026-11-15 22:10] Claude → Darling, Cherry — Che779-Emulator, issue #1 (giai đoạn 1 xong)
+- Đang giữ: Che779-Emulator, `apps/remoter-linux`. Đã trả khi push xong.
+- Đã làm: viết lại `Main.java` thành 6 khu vực theo Windows, theme tối/sáng; `Core.java` thêm dòng tab (chưa chạy), Dừng/Chạy lại, cột CPU/RAM/PID qua `/proc`, tách dữ liệu theo tab (`-Dche779.data`), thống kê hệ thống; hồ sơ, tự mở lại, tự Clean RAM, canh RAM, hẹn giờ, luôn-trên-cùng.  [ĐÃ CHẠY] Xvfb + game thật: 3 tab tự mở, bảng đúng; `tests/RemoterCoreTest.java` đạt 12/12.
+- Chưa: bấm thử từng nút bằng chuột `[GIẢ ĐỊNH]`; Sắp xếp tab cần `xdotool` (chưa cài được ở máy thử); Xem lưới và Macro chưa port. Bảng đối chiếu Windows ↔ Linux nằm ở `apps/remoter-linux/README.md`.
+- Nhờ Darling/Cherry: chạy bản Linux thật, chụp lại, đối chiếu với ảnh Windows, báo khác biệt còn lại vào issue #1.

@@ -13,22 +13,37 @@ cd apps/remoter-linux
 
 Cần `Che779_Emulator.jar`: Remoter tự dò cạnh nó, ở `../emulator/source/` hoặc `../emulator/prebuilt/`; không thấy thì bấm **Cài đặt** để chọn. Máy không có màn hình (SSH/server) có thể dùng `xvfb-run -a ./run.sh`.
 
-## Dùng
+## Giao diện (6 khu vực, bám Remoter Windows)
 
-| Nút | Việc |
-|---|---|
-| Mở game… / Mở lại / Đóng / Đóng hết | Quản lý tab (mỗi game một cửa sổ Emulator) |
-| Hiện / Ẩn / Ngủ / Thức / Dọn RAM | Gửi tới tab đang chọn (+ các tab đã tick nếu bật *Đồng bộ*) |
-| Proxy… | `host:port` hoặc `host:port:user:pass`; để trống = tắt |
-| Chụp… | Lưu ảnh màn hình tab đang chọn |
-| Khung xem trước + bàn phím | Nhấp/kéo chuột và gõ phím ở đây → nhân ra mọi tab đã tick (tọa độ theo tỉ lệ) |
+Giao diện tối, màu hồng, bố cục 6 khu vực như bản Windows (có thể chuyển sáng/tối ở mục 5):
 
-Cấu hình lưu ở `~/.che779/remoter.properties`; log từng tab ở thư mục tạm (`che779-tab<N>.log`).
+1. **Đường dẫn** Emulator · Game · Java (có nút Duyệt).
+2. **Cấu hình tab & lưới**: RAM tối đa, số tab, chờ (ms), kích thước ô tab, lưới cột × hàng, *Tự tính*, tự sắp xếp, tách dữ liệu từng tab; lưới nút số tab 1…N (bấm để chọn và hiện tab).
+3. **Hành động**: Bắt đầu, Dừng, Ẩn, Hiện, Ngủ, Thức, Clean RAM, Sắp xếp tab, Thêm game…, Thêm N tab, Xóa dòng, Đóng hết.
+4. **Danh sách tab & trạng thái hệ thống**: Game, Trạng thái, Cổng, CPU, RAM, Ngủ, PID; CPU/RAM hệ thống và tổng các tab (đọc từ `/proc`, chỉ Linux).
+5. **Đồng bộ & bàn phím**: Đồng bộ Tab / Phím / Chuột, giao diện tối, *Mở bàn phím đầy đủ / xem trước* (khung xem trước + bàn phím ảo).
+6. **Tiện ích**: Lưu/Nạp hồ sơ, Thư mục dữ liệu, Xóa dữ liệu; tự mở lại tab khi tắt/crash (tối đa 5 lần), tự bắt đầu khi mở Remoter, tự Clean RAM mỗi N phút, tự cho ngủ khi RAM ≥ N%, hẹn giờ đóng hết, luôn nằm trên cùng; cùng nút Proxy…, Chụp…, Mở lại.
 
-## Khác với Remoter Windows
+Cấu hình: `~/.che779/Che779-Remoter/che779_remoter.ini` (cùng tên khóa với bản Windows); dữ liệu Emulator: `~/.che779/Che779-Emulator` (hoặc `tab<N>` khi bật tách dữ liệu); log từng tab: thư mục tạm (`che779-tab<N>.log`).
 
-- Đồng bộ chuột/phím làm trên **khung xem trước** của Remoter, không hook toàn cục vào cửa sổ Emulator (X11/Wayland không cho phép dễ dàng).
-- Chưa có: xếp cửa sổ, xem lưới, quản lý proxy hàng loạt, hẹn giờ đóng, tự mở lại tab văng.
+## Đối chiếu tính năng Windows ↔ Linux
+
+| Tính năng Windows | Linux | Ghi chú |
+|---|---|---|
+| Đường dẫn Emulator/Game/Java + Duyệt | Implemented | |
+| RAM, số tab, chờ, ô tab, lưới, Tự tính, tách dữ liệu | Implemented | Tự tính dựa theo bề ngang màn hình |
+| Bắt đầu / Dừng / Đóng hết / Thêm game / Thêm N tab / Xóa dòng | Implemented | |
+| Ẩn / Hiện / Ngủ / Thức / Clean RAM | Implemented | Qua IPC; Ẩn/Hiện không trả đúng vị trí cửa sổ như Windows |
+| Sắp xếp tab | Equivalent | Dùng `xdotool` (X11). Không có `xdotool` hoặc Wayland thuần: báo rõ, không làm giả |
+| Cột CPU/RAM/PID, thống kê hệ thống | Implemented | Đọc `/proc`; không có trên Windows/macOS |
+| Đồng bộ Tab / Phím | Implemented | Phím thật chỉ khi cửa sổ Remoter (hoặc cửa sổ xem trước) đang focus |
+| Đồng bộ Chuột | Equivalent | Chỉ qua **khung xem trước** của Remoter (tọa độ tỉ lệ), không hook toàn cục |
+| Bàn phím đầy đủ | Equivalent | Nằm trong cửa sổ xem trước + bàn phím ảo |
+| Lưu/Nạp hồ sơ, Thư mục dữ liệu, Xóa dữ liệu | Implemented | |
+| Tự mở lại, tự bắt đầu, tự Clean RAM, canh RAM, hẹn giờ, luôn trên cùng | Implemented | Luôn-trên-cùng phụ thuộc window manager |
+| Xem lưới (GridPreview) | **Chưa làm** | Giai đoạn sau |
+| Macro (ghi/phát) | **Chưa làm** | Chưa quyết định có cần ở Linux không |
+| Giao diện sáng/tối | Implemented | |
 
 ## Build
 
@@ -42,6 +57,7 @@ Cần JDK 8+ (biên dịch ra bytecode Java 8). Kết quả: `Che779_Remoter.jar
 
 ## Trạng thái kiểm thử
 
-- ✅ Build bằng JDK 21 trên Linux; phần lõi (mở tab, ping, status, phím, chuột, ẩn/hiện, ngủ, dọn RAM, chụp, đóng) đã chạy với Emulator V1 và game thật dưới màn hình ảo Xvfb.
-- ✅ Giao diện hiện đúng, khung xem trước hiển thị game (chụp từ Xvfb).
-- ❌ Chưa thử trên màn hình/cửa sổ thật có trình quản lý cửa sổ, nhiều tab cùng lúc, Wayland, Termux; `build.cmd`/`build.ps1` chưa chạy trên Windows.
+- ✅ Build bằng JDK 21; chạy dưới Xvfb với Emulator V1 + game thật: 3 tab tự mở từ cấu hình, bảng hiện đúng trạng thái/cổng/CPU/RAM/PID, thống kê hệ thống (ảnh chụp Xvfb).
+- ✅ `tests/RemoterCoreTest.java` (lõi): thêm dòng, chạy, IPC sẵn sàng, PID, RAM tiến trình, tách dữ liệu theo tab, Clean RAM, Ngủ/Thức, Dừng giữ dòng, chạy lại — đạt toàn bộ.
+- ⚠️ **Chưa bấm thử từng nút bằng chuột**: máy thử không có công cụ giả lập chuột/phím. Nhóm nút Ẩn/Hiện, Thêm game/Thêm N tab, Xóa dòng, hồ sơ, các tùy chọn tự động chỉ mới được kiểm gián tiếp (đọc mã + lõi).
+- ❌ Sắp xếp tab chưa thử (không có `xdotool` trên máy thử); chưa thử màn hình thật có window manager, Wayland, Termux; `build.cmd`/`build.ps1` chưa chạy trên Windows.

@@ -9,25 +9,37 @@ import java.util.concurrent.CopyOnWriteArrayList;
 final class Core {
     static final class Tab {
         final int id;
-        final File game;
-        final int port;
+        volatile File game;
+        volatile int port;
+        volatile boolean stopRequested;
+        volatile int restarts;
+        volatile double cpu = -1;
+        volatile long rssMb = -1;
+        long lastTicks = -1, lastAt;
         volatile Process proc;
-        volatile String state = "Khoi dong";
+        volatile String state = "Chưa chạy";
         volatile String proxy = "none";
         volatile boolean sleeping;
         volatile boolean checked = true;
         volatile long pid = -1;
         volatile boolean hidden;
-        Tab(int id, File game, int port) { this.id = id; this.game = game; this.port = port; }
+        Tab(int id, File game) { this.id = id; this.game = game; }
         boolean alive() { Process p = proc; return p != null && p.isAlive(); }
-        String name() { return game.getName(); }
+        String name() { return game == null ? "(chưa chọn game)" : game.getName(); }
     }
 
     final List<Tab> tabs = new CopyOnWriteArrayList<Tab>();
-    final File emuJar;
+    volatile File emuJar;
     final int basePort;
+    static final long CLK = 100;
     int ramMb = 512;
+    int waitMs = 2000;
+    boolean separateData;
+    File javaExe = new File(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java");
+    File dataRoot = new File(System.getProperty("user.home"), ".che779" + File.separator + "Che779-Emulator");
     private int nextId = 1;
+
+    void emuJar_set(File f) { this.emuJar = f; }
 
     Core(File emuJar, int basePort) { this.emuJar = emuJar; this.basePort = basePort; }
 
@@ -43,24 +55,33 @@ final class Core {
         throw new IllegalStateException("Het cong IPC trong dai " + basePort + "+400");
     }
 
-    /** Mo mot tab moi chay game. Tra ve tab hoac nem loi. */
-    synchronized Tab open(File game) throws Exception {
-        if (!emuJar.isFile()) throw new IllegalStateException("Khong thay Che779_Emulator.jar: " + emuJar);
-        if (!game.isFile()) throw new IllegalStateException("Khong thay game: " + game);
-        int port = freePort();
-        Tab t = new Tab(nextId++, game, port);
-        start(t);
-        tabs.add(t);
-        return t;
+    /** Them mot dong tab (chua chay). */
+    synchronized Tab addRow(File game) { Tab t = new Tab(nextId++, game); tabs.add(t); return t; }
+
+    /** Them dong va chay ngay (dung cho tham so dong lenh). */
+    synchronized Tab open(File game) throws Exception { Tab t = addRow(game); start(t); return t; }
+
+    /** Chay (hoac chay lai) mot dong tab. */
+    synchronized void start(Tab t) throws Exception {
+        if (!emuJar.isFile()) throw new IllegalStateException("Không thấy Che779_Emulator.jar: " + emuJar);
+        if (t.game == null || !t.game.isFile()) { t.state = "Thiếu file game"; throw new IllegalStateException("Không thấy game: " + t.game); }
+        if (t.alive()) return;
+        t.port = freePort();
+        t.stopRequested = false;
+        launch(t);
     }
 
-    private void start(Tab t) throws Exception {
+    private void launch(Tab t) throws Exception {
         List<String> cmd = new ArrayList<String>();
-        cmd.add(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java");
+        cmd.add(javaExe.getPath());
         cmd.add("-Xmx" + ramMb + "m");
+        cmd.add("-Xms8m");
         cmd.add("-XX:+UseSerialGC");
         cmd.add("-Djava.net.preferIPv4Stack=true");
         cmd.add("-Dche779.port=" + t.port);
+        File data = separateData ? new File(dataRoot, "tab" + t.id) : dataRoot;
+        data.mkdirs();
+        cmd.add("-Dche779.data=" + data.getAbsolutePath());
         cmd.add("-jar");
         cmd.add(emuJar.getAbsolutePath());
         cmd.add(t.game.getAbsolutePath());
@@ -68,8 +89,9 @@ final class Core {
         pb.redirectErrorStream(true);
         pb.redirectOutput(ProcessBuilder.Redirect.to(new File(System.getProperty("java.io.tmpdir"), "che779-tab" + t.id + ".log")));
         t.proc = pb.start();
-        t.state = "Khoi dong";
+        t.state = "Đang mở...";
         t.hidden = false;
+        t.pid = -1; t.cpu = -1; t.rssMb = -1; t.lastTicks = -1;
     }
 
     /** Khoi dong lai tab (neu da thoat hoac treo). */
@@ -91,13 +113,14 @@ final class Core {
 
     /** Cap nhat trang thai tu IPC. */
     void poll(Tab t) {
-        if (!t.alive()) { t.state = "Da thoat"; return; }
+        if (!t.alive()) { if (t.proc != null) t.state = t.stopRequested ? "Đã dừng" : "Đã thoát"; t.cpu = -1; t.rssMb = -1; return; }
         String r = Ipc.call(t.port, "{\"action\":\"status\"}", 700);
-        if (!Ipc.ok(r)) { t.state = "Khong phan hoi"; return; }
+        if (!Ipc.ok(r)) { t.state = "Không phản hồi"; return; }
         t.sleeping = "true".equals(Ipc.field(r, "sleeping"));
         String pid = Ipc.field(r, "pid");
         try { if (pid != null) t.pid = Long.parseLong(pid.trim()); } catch (NumberFormatException ignore) {}
-        t.state = t.hidden ? "An" : (t.sleeping ? "Ngu" : "Dang chay");
+        t.state = t.hidden ? "Ẩn" : (t.sleeping ? "Ngủ" : "Đang chạy");
+        procStats(t);
         String px = Ipc.call(t.port, "{\"action\":\"proxy_get\"}", 700);
         String d = Ipc.field(px, "proxy");
         if (d != null) t.proxy = d;
@@ -136,13 +159,16 @@ final class Core {
 
     /** Dong tab: quit qua IPC, neu khong thoat thi huy tien trinh. remove=true thi go khoi danh sach. */
     void close(Tab t, boolean remove) {
+        t.stopRequested = true;
         if (t.alive()) {
             Ipc.call(t.port, "{\"action\":\"quit\"}", 800);
             Process p = t.proc;
             try { if (p != null && !p.waitFor(2, java.util.concurrent.TimeUnit.SECONDS)) p.destroyForcibly(); }
             catch (InterruptedException e) { if (p != null) p.destroyForcibly(); }
         }
-        t.state = "Da thoat";
+        t.stopRequested = true;
+        t.state = remove ? "Đã đóng" : "Đã dừng";
+        t.cpu = -1; t.rssMb = -1;
         if (remove) tabs.remove(t);
     }
 
@@ -154,5 +180,47 @@ final class Core {
         if (main != null) r.add(main);
         if (sync) for (Tab t : tabs) if (t != main && t.checked && t.alive()) r.add(t);
         return r;
+    }
+
+    /** CPU/RAM cua tien trinh tab qua /proc (chi Linux); khong co thi de -1. */
+    void procStats(Tab t) {
+        long pid = t.pid;
+        if (pid <= 0) return;
+        try {
+            String st = new String(java.nio.file.Files.readAllBytes(new File("/proc/" + pid + "/stat").toPath()), "UTF-8");
+            String[] f = st.substring(st.lastIndexOf(')') + 2).split(" ");
+            long ticks = Long.parseLong(f[11]) + Long.parseLong(f[12]);
+            long now = System.nanoTime();
+            if (t.lastTicks >= 0 && now > t.lastAt) t.cpu = Math.max(0, (ticks - t.lastTicks) * 1e9 / CLK / (now - t.lastAt) * 100.0);
+            t.lastTicks = ticks; t.lastAt = now;
+            for (String line : java.nio.file.Files.readAllLines(new File("/proc/" + pid + "/status").toPath(), java.nio.charset.StandardCharsets.UTF_8))
+                if (line.startsWith("VmRSS:")) t.rssMb = Long.parseLong(line.replaceAll("[^0-9]", "")) / 1024;
+        } catch (Exception e) { /* khong phai Linux hoac tien trinh da thoat */ }
+    }
+
+    /** RAM he thong (usedMb, totalMb) tu /proc/meminfo; null neu khong doc duoc. */
+    static long[] sysMem() {
+        try {
+            long total = -1, avail = -1;
+            for (String l : java.nio.file.Files.readAllLines(new File("/proc/meminfo").toPath(), java.nio.charset.StandardCharsets.UTF_8)) {
+                if (l.startsWith("MemTotal:")) total = Long.parseLong(l.replaceAll("[^0-9]", "")) / 1024;
+                else if (l.startsWith("MemAvailable:")) avail = Long.parseLong(l.replaceAll("[^0-9]", "")) / 1024;
+            }
+            return total > 0 && avail >= 0 ? new long[] { total - avail, total } : null;
+        } catch (Exception e) { return null; }
+    }
+
+    private long[] lastCpu;
+    /** CPU he thong 0..100 theo /proc/stat (so voi lan goi truoc); -1 neu khong co. */
+    synchronized double sysCpu() {
+        try {
+            String[] f = java.nio.file.Files.readAllLines(new File("/proc/stat").toPath(), java.nio.charset.StandardCharsets.UTF_8).get(0).trim().split("\\s+");
+            long idle = Long.parseLong(f[4]) + Long.parseLong(f[5]), total = 0;
+            for (int i = 1; i < f.length && i < 9; i++) total += Long.parseLong(f[i]);
+            double r = -1;
+            if (lastCpu != null && total > lastCpu[1]) r = 100.0 * (1.0 - (idle - lastCpu[0]) / (double) (total - lastCpu[1]));
+            lastCpu = new long[] { idle, total };
+            return r;
+        } catch (Exception e) { return -1; }
     }
 }

@@ -19,7 +19,8 @@ Chạy tay: `python tests/verify_project1.py --jar apps/emulator/source/Che779_E
 | Emulator trên Linux (màn hình ảo Xvfb) với game thật | Claude chạy | Mở được game |
 | IPC: `ping`, `status`, `version`, `keypress`, `hide/show`, `screenshot`, `proxy_get` | Claude gửi lệnh tới Emulator đang chạy | Phản hồi đúng |
 | Remoter Linux: mở tab, ping, status, phím, chuột, ẩn/hiện, ngủ, dọn RAM, chụp, đóng | Claude chạy dưới Xvfb với game thật | Đúng |
-| Remoter Linux: giao diện hiển thị, khung xem trước có hình game | Chụp màn hình Xvfb | Đúng |
+| Remoter Linux: giao diện 6 khu vực, 3 tab tự mở, bảng CPU/RAM/PID | Chụp màn hình Xvfb | Đúng |
+| Remoter Linux lõi: `tests/RemoterCoreTest.java` | Claude chạy dưới Xvfb với game thật | Đạt |
 
 ## Chưa kiểm chứng
 

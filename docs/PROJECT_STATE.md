@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Emulator | Java / Swing / MicroEmulator 3.0.0 | `apps/emulator` | Chủ dự án xác nhận chạy tốt trên Windows; Claude đã chạy trên Linux |
 | Remoter Windows | C# / Windows Forms / .NET Framework 4.8 | `apps/remoter-windows` | Chủ dự án xác nhận chạy tốt trên Windows; Claude chưa build được (không có trình biên dịch C#) |
-| Remoter Linux | Java / Swing | `apps/remoter-linux` | Lõi và giao diện đã chạy thử dưới Xvfb với game thật |
+| Remoter Linux | Java / Swing | `apps/remoter-linux` | Giao diện 6 khu vực bám Windows (issue #1, giai đoạn 1); lõi + giao diện đã chạy thử dưới Xvfb với game thật; còn thiếu Xem lưới, Macro |
 | IPC | TCP loopback + JSON một dòng | — | 17 lệnh, xem `IPC_PROTOCOL.md` |
 
 ## Đã có
