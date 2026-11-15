@@ -228,7 +228,6 @@ Che779-Emulator/
 ├─ docs/                 Tài liệu kỹ thuật (có mục lục)
 ├─ scripts/              Đóng gói bản Windows
 ├─ tests/                Kiểm tra cấu trúc repo
-├─ LICENSES/             Giấy phép bên thứ ba
 └─ .github/              Workflow CI + Phát hành, mẫu Issue và Pull Request
 ```
 
@@ -248,7 +247,7 @@ Muốn góp sức? Đọc [`CONTRIBUTING.md`](CONTRIBUTING.md). Tìm thấy lỗ
 
 ## 🙏 Ghi công và giấy phép
 
-Emulator dựa trên **[MicroEmulator](https://github.com/barteo/microemu)** 3.0.0 (Apache License 2.0); Remoter lấy cảm hứng từ ZMicroPro. Giữ nguyên thông báo bản quyền khi phân phối lại; xem [`LICENSE`](LICENSE) và thư mục [`LICENSES/`](LICENSES).
+Emulator dựa trên **[MicroEmulator](https://github.com/barteo/microemu)** 3.0.0 (Apache License 2.0); Remoter lấy cảm hứng từ ZMicroPro. Giữ nguyên thông báo bản quyền khi phân phối lại; xem [`LICENSE`](LICENSE).
 
 <div align="center">
 
