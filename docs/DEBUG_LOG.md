@@ -5,34 +5,29 @@ Các mục dưới đây là phát hiện từ review source `1.3.0`, chưa ph�
 ## P1 — IPC chưa xác thực và screenshot nhận đường dẫn tùy ý
 
 - **Khu vực:** `IpcServer.java`, `Che779Main.screenshot()`.
-- **Quan sát:** server bind loopback nhưng không có token; action `quit/close` kết thúc tiến trình; `screenshot` nhận path từ request.
+- **Quan sát:** server bind loopback; chưa có token xác thực; `screenshot` nhận path từ request.
 - **Tác động:** tiến trình cục bộ biết cổng có thể gửi lệnh; screenshot có thể ghi file theo quyền người dùng.
-- **Đề xuất:** token phiên ngẫu nhiên; kiểm tra path/giới hạn output; ghi log từ chối; không mở server ra LAN.
-- **Trạng thái:** chưa sửa, cần thiết kế tương thích Remoter.
+- **Đề xuất:** đánh giá token phiên và kiểm tra path/giới hạn output; giữ tương thích Remoter.
+- **Trạng thái:** rủi ro bảo mật còn mở; chưa được xử lý trong audit này.
 
 ## P1 — IPC parser không phải JSON parser đầy đủ
 
 - **Khu vực:** `IpcServer.parse()` / `unescape()`.
-- **Quan sát:** regex parser chỉ hỗ trợ schema phẳng và escape một phần.
-- **Tác động:** chuỗi đặc biệt hoặc mở rộng protocol có thể parse sai.
-- **Đề xuất:** dùng JSON parser đã vendored hoặc thay parser có test; không thêm dependency không rõ license.
-- **Trạng thái:** chưa sửa.
+- **Quan sát:** cần xác minh parser hiện tại theo test protocol và schema đang dùng; chưa đủ căn cứ gọi đây là lỗi runtime.
+- **Đề xuất:** bổ sung test escape và dữ liệu biên trước khi quyết định thay parser.
+- **Trạng thái:** cần xác minh; không tự động thay parser.
 
 ## P1 — Server không giới hạn client và thời gian đọc
 
 - **Khu vực:** `IpcServer.serve()`.
-- **Quan sát:** `setSoTimeout(0)`, một thread cho mỗi client, không giới hạn độ dài dòng.
-- **Tác động:** client cục bộ có thể giữ socket/thread hoặc gửi payload lớn.
-- **Đề xuất:** read timeout, max line length, giới hạn concurrent clients và đóng socket lỗi.
-- **Trạng thái:** chưa sửa.
+- **Quan sát source main:** hiện có timeout 5 giây, giới hạn 16 client và giới hạn 65.536 ký tự mỗi dòng.
+- **Trạng thái:** các biện pháp giới hạn đã có trong source; cần giữ test hồi quy. Không giao lại việc triển khai các giới hạn này.
 
 ## P1 — Có khả năng truy cập WinForms control từ thread hook
 
 - **Khu vực:** `MainForm.Sync.cs`, `MouseSync.cs`, `Targets()`.
-- **Quan sát:** callback hook có đường gọi đọc checkbox/grid/collection UI.
-- **Tác động:** race condition hoặc cross-thread exception.
-- **Đề xuất:** snapshot target trên UI thread; hook chỉ phát event chuẩn hóa; đồng bộ lifetime của hook.
-- **Trạng thái:** chưa sửa; Remoter chưa được build/test trong môi trường hiện tại.
+- **Quan sát source main:** `OnMouseEvent` đã marshal callback về UI thread bằng `BeginInvoke` trước khi đọc `tabs` và trạng thái WinForms.
+- **Trạng thái:** phần truy cập UI từ hook đã có biện pháp xử lý trong source; cần build/test Windows để xác nhận runtime. Không giao lại việc này nếu chưa phát hiện regression.
 
 ## P2 — MouseSync ánh xạ theo cửa sổ ngoài
 
