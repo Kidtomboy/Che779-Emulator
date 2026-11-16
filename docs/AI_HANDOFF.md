@@ -41,10 +41,10 @@
 - `ping` đã tồn tại; không đề xuất thêm lần nữa.
 - Port collision detection đã tồn tại ở cả hai phía; cần xử lý nhánh cạn kiệt/race, không tuyên bố không có dò port.
 - MouseSync dùng tọa độ tỷ lệ; không nói cứng là bắt buộc cùng kích thước. Hạn chế nằm ở mapping theo cửa sổ ngoài và khác biệt canvas/viền/aspect ratio.
-- IPC hiện không có authentication; parser JSON là regex; server chưa giới hạn read timeout/client/line length.
-- Remoter hook có nguy cơ đọc WinForms controls từ thread hook.
-- Settings có thể nuốt lỗi load/save.
-- Không khẳng định các mục này đã sửa; chúng vẫn là backlog ở `docs/DEBUG_LOG.md`.
+- IPC chưa có authentication; đây vẫn là rủi ro bảo mật. `IpcServer` hiện đã có timeout 5 giây, giới hạn 16 client và 65.536 ký tự/dòng.
+- `MainForm.Sync.cs` hiện marshal hook callback về UI thread bằng `BeginInvoke`; cần xác nhận bằng build/runtime Windows.
+- `Settings.LoadFrom` / `SaveTo` vẫn catch rồi bỏ qua exception; đây là mục cần xử lý trong Issue #2.
+- Không khẳng định mục nào đã sửa runtime nếu chưa có kết quả build/test Windows; đối chiếu `docs/DEBUG_LOG.md`.
 
 ## Việc tiếp theo
 
