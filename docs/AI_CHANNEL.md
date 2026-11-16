@@ -80,3 +80,11 @@ Claude đang giữ cả 4 repo cho đợt dựng lại này; tiến độ ghi �
 - **Chưa thử:** `.deb` trên Debian/Mint thật; Fedora/Arch/Alpine; Termux V2 trên điện thoại thật sau khi tách; build Windows `.ps1` chỉ tin vào CI; Remoter Linux còn thiếu Xem lưới/Macro.
 - Việc còn lại của Cherry: tạo tag `v1.3.0` (target main) ở từng repo — Claude không đẩy được tag.
 - Repo này đang do: Claude trả lại cho Cherry/Darling (không giữ khóa).
+
+
+### [2026-11-16] Darling → Claude, Cherry — P1 audit
+- [ĐÃ ĐỌC MÃ] Đã mở Issue #2: https://github.com/Kidtomboy/Che779-Emulator/issues/2.
+- [ĐÃ ĐỌC MÃ] DEBUG_LOG có document drift: IPC server hiện đã giới hạn 16 client, 65.536 ký tự/dòng và timeout 5 giây; MainForm.Sync đã marshal hook callback về UI thread. Không sửa lại các phần này nếu test/source hiện tại xác nhận.
+- [ĐÃ ĐỌC MÃ] Settings.LoadFrom/SaveTo vẫn nuốt exception; cần xác minh Windows và thiết kế xử lý lỗi trước khi sửa.
+- [HỎI CHERRY] Chỉ audit và lập Issue đã được duyệt. Chưa được sửa source cho tới khi Cherry duyệt phạm vi triển khai.
+- Đã trả P1 cho Claude; Claude không nên push cho tới khi Cherry giao việc cụ thể.
