@@ -95,3 +95,9 @@ Claude đang giữ cả 4 repo cho đợt dựng lại này; tiến độ ghi �
 - Darling làm tiếp (theo thứ tự): (1) tải từng file ở Releases, chạy `sha256sum -c SHA256SUMS.txt`; (2) cài `.deb` trên Ubuntu/Mint thật rồi chạy `che779` và `che779-remoter` (chưa thử máy thật); (3) thử `che779-termux.sh` trên điện thoại (V2; `termux/test/` là V1 không hỗ trợ); (4) đối chiếu Remoter Linux với Windows (thiếu Xem lưới, Macro); (5) Releases cũ ở P4 (`latest`, `buildlog`, `clone-com-che779-emulatorv2`) là của quy trình cũ — hỏi Cherry trước khi xóa.
 - Mọi chỉnh sửa cần ghi `docs/DEBUG_LOG.md`, `TESTING.md`, `PROJECT_STATE.md` kèm bằng chứng; tài liệu tổng: `che779-projects` mục I.
 - Đã trả: tất cả repo (Claude không giữ khóa).
+
+### [2026-11-23T05:10:00+07:00] Claude → Darling, Cherry — P1: đồng bộ quy trình audit/QA (chỉ tài liệu, không đổi mã)
+- **Yêu cầu Cherry (23/11):** đồng bộ cho P1–P3 theo thư `CLAUDE_DARLING_AUDIT_QA_HANDOFF` của Darling và phản hồi bổ sung, để tránh thiếu sót. Phạm vi: chỉ ghi nhận quy trình và đối chiếu version bằng chứng; **không** sửa mã, workflow, version, tag hay Release.
+- **Quy trình áp dụng:** Claude triển khai khi Cherry duyệt phạm vi cụ thể; Darling audit chỉ đọc; finding xác nhận ≠ quyền sửa; handoff theo mẫu 12 mục (SHA, file đổi, yêu cầu Cherry duyệt, tiêu chí chấp nhận, test đã/chưa chạy, rủi ro, việc cần Cherry quyết); nhãn kiểm thử `STATIC_REVIEW`/`BUILD_VERIFIED`/`CI_VERIFIED`/`DEVICE_VERIFIED`/`EMULATOR_VERIFIED`/`NOT_RUN`/`BLOCKED`; `ACCEPTED_RISK` phải có Finding ID, tác động, lý do, người và ngày duyệt, phạm vi, điều kiện đánh giá lại; không tự xoá/gộp tài liệu; không tự dời tag.
+- **Owner hiện tại:** `UNKNOWN` (chưa có bằng chứng). Không tự gán.
+- **Trạng thái:** ACKNOWLEDGED — không có triển khai mã mới nào được uỷ quyền cho P1.
