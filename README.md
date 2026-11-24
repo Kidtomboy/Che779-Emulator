@@ -215,7 +215,7 @@ Muốn góp sức? Đọc [`CONTRIBUTING.md`](CONTRIBUTING.md). Tìm thấy lỗ
 
 ## 🙏 Ghi công và giấy phép
 
-Emulator dựa trên **[MicroEmulator](https://github.com/barteo/microemu)** 3.0.0 (Apache License 2.0); Remoter lấy cảm hứng từ ZMicroPro. Giữ nguyên thông báo bản quyền khi phân phối lại; xem [`LICENSE`](LICENSE).
+Emulator dựa trên **[MicroEmulator](https://github.com/barteo/microemu)** 3.0.0 (Apache License 2.0). Giữ nguyên thông báo bản quyền khi phân phối lại; xem [`LICENSE`](LICENSE).
 
 <div align="center">
 
