@@ -8,7 +8,7 @@ Các mục dưới đây là phát hiện từ review source `1.3.0`, chưa ph�
 - **Quan sát:** server bind loopback; chưa có token xác thực; `screenshot` nhận path từ request.
 - **Tác động:** tiến trình cục bộ biết cổng có thể gửi lệnh; screenshot có thể ghi file theo quyền người dùng.
 - **Đề xuất:** đánh giá token phiên và kiểm tra path/giới hạn output; giữ tương thích Remoter.
-- **Trạng thái:** rủi ro bảo mật còn mở; chưa được xử lý trong audit này.
+- **Trạng thái:** rủi ro bảo mật còn mở (chưa có token xác thực vì cần đổi Remoter). Đã giảm một phần ở nhánh làm việc 2026-11-24: lệnh `screenshot` chỉ ghi tệp `.png` (Remoter luôn gửi `.png`); `BUILD_VERIFIED` bằng `javac`, chưa chạy thật (`NOT_RUN`).
 
 ## P1 — IPC parser không phải JSON parser đầy đủ
 

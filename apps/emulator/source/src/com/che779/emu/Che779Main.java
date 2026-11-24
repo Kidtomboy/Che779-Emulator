@@ -134,6 +134,10 @@ public final class Che779Main {
     static boolean screenshot(final String path) {
         final Frame f = findFrame();
         if (f == null || path == null || path.length() == 0) return false;
+        // Chi ghi file .png (Remoter luon gui duong dan .png) de lenh khong ghi de duoc file khac
+        if (!path.toLowerCase().endsWith(".png")) return false;
+        final java.io.File target = new java.io.File(path);
+        if (target.exists() && !target.isFile()) return false;
         try {
             final boolean[] ok = { false };
             SwingUtilities.invokeAndWait(new Runnable() { public void run() {
