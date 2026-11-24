@@ -16,7 +16,7 @@
 
 - Một repository gồm hai app phối hợp: Che779 Emulator V1 (Java) và Che779 Remoter (C# WinForms).
 - Emulator mỗi game một JVM riêng; Remoter quản lý process và điều khiển qua TCP loopback JSON Lines.
-- Baseline app version: `1.3.0`.
+- Baseline app version: `1.3.1`.
 - Emulator source: `apps/emulator/source/`.
 - Remoter source: `apps/remoter-windows/source/`.
 - IPC contract: `docs/IPC_PROTOCOL.md`.
@@ -78,9 +78,9 @@ Darling đã rà soát source và tài liệu ở revision hiện tại. Danh s�
 ## Đối chiếu version — 2026-11-23 (đồng bộ theo yêu cầu Cherry)
 | Nguồn | Giá trị |
 |---|---|
-| `VERSION` / `PROJECT_STATE.md` | 1.3.0 |
+| `VERSION` / `PROJECT_STATE.md` / `AppInfo.cs` / `build_emulator.bat` | 1.3.1 (nguồn; chưa có tag/Release `v1.3.1`, Cherry tạo tag) |
 | HEAD `main` | `7dbe80855b8a507e295ff7c7ae68f3ac7e5ef3ca` |
 | Tag | `v1.3.0` → `d0c8ba5`; `v1.2.0` → `ac7a81d` |
-| Release | Release `v1.3.0`, `v1.2.0` (target `main`) |
+| Release | Release `v1.3.0`, `v1.2.0` (target `main`); Release `v1.3.1` chưa có |
 - Chưa cài/chạy artifact thực tế: `NOT_RUN`. Mức kiểm tra ở đây chỉ là đối chiếu metadata Git/GitHub (`STATIC_REVIEW`).
 - Mọi chênh lệch (nếu có) giữ nguyên là version inconsistency cho đến khi Cherry/Darling xác định nguồn chuẩn; Claude không tự sửa version hay dời tag.

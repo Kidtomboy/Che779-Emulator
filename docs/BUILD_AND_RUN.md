@@ -36,4 +36,4 @@ Bản Linux (Remoter Linux, `.deb`, `.tar.gz`) nằm ở repo **Che779-Linux**.
 
 ## Phát hành
 
-Gắn thẻ `v1.3.0` → workflow **Phát hành** (chạy trên Windows) build Emulator + Remoter, đóng zip và tạo `SHA256SUMS.txt`, rồi đăng lên Releases.
+Gắn thẻ `v1.3.1` → workflow **Phát hành** (chạy trên Windows) build Emulator + Remoter, đóng zip và tạo `SHA256SUMS.txt`, rồi đăng lên Releases.
