@@ -75,7 +75,7 @@ final class IpcServer {
         }
     }
 
-    /** Read one protocol line without allowing an unbounded allocation. */
+    /** Đọc một dòng giao thức, không cho cấp phát bộ nhớ vô hạn. */
     private static String readBoundedLine(BufferedReader in) throws IOException {
         StringBuilder line = new StringBuilder();
         int ch;
@@ -92,9 +92,9 @@ final class IpcServer {
     }
 
     /**
-     * Parse the flat JSON object used by the Remoter protocol. Unlike the former
-     * regex scanner this honours JSON string boundaries, escapes and primitive
-     * values, and rejects malformed/trailing input instead of guessing fields.
+     * Phân tích đối tượng JSON phẳng của giao thức Remoter. Khác với bộ quét
+     * regex cũ, bộ này tôn trọng ranh giới chuỗi JSON, ký tự thoát và giá trị
+     * nguyên thủy, và từ chối dữ liệu sai cấu trúc/thừa thay vì đoán trường.
      */
     static Map<String, String> parse(String json) {
         Map<String, String> result = new HashMap<String, String>();
