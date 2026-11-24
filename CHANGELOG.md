@@ -2,7 +2,9 @@
 
 Chỉ ghi những gì **phiên bản hiện tại** đang làm được. Lịch sử các bản trước không còn được lưu ở đây.
 
-## [1.3.0] — Bản phát hành (chỉ Windows)
+## [1.3.1] — Bản phát hành (chỉ Windows)
+
+So với 1.3.0: lệnh chụp màn hình của cổng IPC chỉ ghi tệp `.png` và từ chối đích không phải tệp thường (giảm rủi ro ghi đè tệp tùy ý; token IPC vẫn chưa có). Chưa chạy thử trên Windows (`NOT_RUN`).
 
 > Từ 1.3.0 repo này chỉ dành cho Windows. Bản Linux (kể cả Remoter Linux) nằm ở Che779-Linux.
 

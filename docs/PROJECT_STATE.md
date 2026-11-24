@@ -1,6 +1,6 @@
 # Trạng thái dự án — Che779 Emulator + Remoter
 
-**Phiên bản:** `1.3.0` (file `VERSION`)
+**Phiên bản:** `1.3.1` (file `VERSION`)
 
 ## Thành phần
 

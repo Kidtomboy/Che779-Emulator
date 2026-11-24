@@ -1,6 +1,6 @@
 name: Phát hành
 
-# Gắn thẻ dạng v1.3.0 (hoặc bấm chạy tay) để tự build trên Windows và đưa file tải về vào trang Releases.
+# Gắn thẻ dạng v1.3.1 (hoặc bấm chạy tay) để tự build trên Windows và đưa file tải về vào trang Releases.
 on:
   push:
     tags: [ 'v*' ]
