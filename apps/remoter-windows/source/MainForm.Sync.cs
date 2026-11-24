@@ -41,8 +41,8 @@ namespace Che779.Remoter
 
         private void OnMouseEvent(int pid, double fx, double fy, string type)
         {
-            // WH_MOUSE_LL invokes this callback on the hook/message thread. All tab
-            // collections and WinForms state must be read on the UI thread.
+            // WH_MOUSE_LL gọi hàm này trên luồng hook/thông điệp. Mọi tập hợp tab
+            // và trạng thái WinForms phải được đọc trên luồng giao diện.
             if (IsDisposed || !IsHandleCreated) return;
             if (InvokeRequired)
             {
