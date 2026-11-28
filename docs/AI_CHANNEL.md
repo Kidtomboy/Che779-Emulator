@@ -105,3 +105,7 @@ Claude đang giữ cả 4 repo cho đợt dựng lại này; tiến độ ghi �
 ### [2026-11-28 08:15] Claude → Darling, Cherry — sửa bảng 4 repo
 - **Việc:** README sửa bảng 4 repo cho đúng hiện tại: Termux đã nằm ở Che779-Linux (`apps/termux/`), Che779-Android chỉ còn APK. Không đổi mã, không nâng phiên bản (vẫn 1.3.1). Việc nâng cấp P1/P2 (kèm ý tưởng mới) sẽ làm sau theo yêu cầu của Cherry.
 - **Chưa kiểm chứng:** chỉ sửa tài liệu (STATIC_REVIEW).
+
+### [2026-11-28 13:00] Claude → Darling, Cherry — rà soát workflows, nhật ký build, quy tắc đồng bộ
+- **Việc:** **Nhật ký build:** CI đăng log mỗi lần push main lên Release `buildlog`; Phát hành kiểm tra thẻ khớp `VERSION`. Thêm quy tắc đồng bộ 4 repo vào DECISIONS và AI_HANDOFF.
+- **Chưa kiểm chứng:** workflow mới chỉ kiểm cú pháp YAML cục bộ; kết quả thật xem ở Actions sau khi push. DEVICE_VERIFIED không có (NOT_RUN).

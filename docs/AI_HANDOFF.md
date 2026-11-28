@@ -84,3 +84,9 @@ Darling đã rà soát source và tài liệu ở revision hiện tại. Danh s�
 | Release | Release `v1.3.0`, `v1.2.0` (target `main`); Release `v1.3.1` chưa có |
 - Chưa cài/chạy artifact thực tế: `NOT_RUN`. Mức kiểm tra ở đây chỉ là đối chiếu metadata Git/GitHub (`STATIC_REVIEW`).
 - Mọi chênh lệch (nếu có) giữ nguyên là version inconsistency cho đến khi Cherry/Darling xác định nguồn chuẩn; Claude không tự sửa version hay dời tag.
+
+## Quy tắc đồng bộ giữa 4 repo (Cherry, 2026-11-28)
+- **P1 hoặc P2 có bản cập nhật → P3 phải theo ngay:** đổi `EMULATOR_V1_REF` / `EMULATOR_V2_REF` ở Che779-Linux sang commit mới, chạy test, cập nhật CHANGELOG/docs của P3. Nhật ký build của P3 có dòng "ghim … CHƯA theo kịp" khi P3 chậm hơn main của P1/P2.
+- **P4 bản chính có cập nhật → bản clone cũng có** (CI main và Release `v*` build cả hai). **Bản V2 (`dev-*`) chỉ làm khi Cherry yêu cầu.**
+- Termux nằm ở P3 (`apps/termux/`), không còn ở P4.
+- **Nhật ký build:** P1, P2, P3 (Linux và Termux riêng), P4 đều đăng log lên Release tiền-phát-hành tên `buildlog` (P3: `buildlog-linux`, `buildlog-termux`) sau mỗi lần push vào main; xem ở trang Releases.

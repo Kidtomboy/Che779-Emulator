@@ -15,6 +15,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Kiểm tra thẻ khớp VERSION
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $v = (Get-Content VERSION -Raw).Trim()
+          if ($env:GITHUB_REF_NAME -ne "v$v") { throw "Thẻ $env:GITHUB_REF_NAME không khớp VERSION (v$v)" }
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '21' }
       - uses: actions/setup-dotnet@v4
