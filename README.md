@@ -4,7 +4,7 @@
 
 **Giả lập J2ME cho Windows: mỗi tab là một cửa sổ game riêng, điều khiển tập trung bằng Remoter.**
 
-> **Nền tảng: Windows.** Quy ước 4 repo: **P1 và P2 = Windows · P3 = Linux (kèm Termux) · P4 = Android**. Bản Linux (kể cả Remoter Linux) nằm ở [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
+> **Nền tảng: Windows.** Quy ước 4 repo: **P1 và P2 = Windows · P3 = Linux + Termux · P4 = Android**. Bản Linux (kể cả Remoter Linux) và Termux nằm ở [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
 
 Emulator (Java) chạy từng game trong một tiến trình riêng; Remoter mở, sắp xếp và đồng bộ tất cả các cửa sổ đó.
 Remoter viết bằng C# (WinForms) cho Windows.
