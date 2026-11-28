@@ -101,3 +101,7 @@ Claude đang giữ cả 4 repo cho đợt dựng lại này; tiến độ ghi �
 - **Quy trình áp dụng:** Claude triển khai khi Cherry duyệt phạm vi cụ thể; Darling audit chỉ đọc; finding xác nhận ≠ quyền sửa; handoff theo mẫu 12 mục (SHA, file đổi, yêu cầu Cherry duyệt, tiêu chí chấp nhận, test đã/chưa chạy, rủi ro, việc cần Cherry quyết); nhãn kiểm thử `STATIC_REVIEW`/`BUILD_VERIFIED`/`CI_VERIFIED`/`DEVICE_VERIFIED`/`EMULATOR_VERIFIED`/`NOT_RUN`/`BLOCKED`; `ACCEPTED_RISK` phải có Finding ID, tác động, lý do, người và ngày duyệt, phạm vi, điều kiện đánh giá lại; không tự xoá/gộp tài liệu; không tự dời tag.
 - **Owner hiện tại:** `UNKNOWN` (chưa có bằng chứng). Không tự gán.
 - **Trạng thái:** ACKNOWLEDGED — không có triển khai mã mới nào được uỷ quyền cho P1.
+
+### [2026-11-28 08:15] Claude → Darling, Cherry — sửa bảng 4 repo
+- **Việc:** README sửa bảng 4 repo cho đúng hiện tại: Termux đã nằm ở Che779-Linux (`apps/termux/`), Che779-Android chỉ còn APK. Không đổi mã, không nâng phiên bản (vẫn 1.3.1). Việc nâng cấp P1/P2 (kèm ý tưởng mới) sẽ làm sau theo yêu cầu của Cherry.
+- **Chưa kiểm chứng:** chỉ sửa tài liệu (STATIC_REVIEW).

@@ -4,7 +4,7 @@
 
 **Giả lập J2ME cho Windows: mỗi tab là một cửa sổ game riêng, điều khiển tập trung bằng Remoter.**
 
-> **Nền tảng: Windows.** Quy ước 4 repo: **P1 và P2 = Windows · P3 = Linux · P4 = Android (kèm Termux)**. Bản Linux (kể cả Remoter Linux) nằm ở [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
+> **Nền tảng: Windows.** Quy ước 4 repo: **P1 và P2 = Windows · P3 = Linux (kèm Termux) · P4 = Android**. Bản Linux (kể cả Remoter Linux) nằm ở [Che779-Linux](https://github.com/Kidtomboy/Che779-Linux).
 
 Emulator (Java) chạy từng game trong một tiến trình riêng; Remoter mở, sắp xếp và đồng bộ tất cả các cửa sổ đó.
 Remoter viết bằng C# (WinForms) cho Windows.
@@ -48,8 +48,8 @@ Che779 gồm 4 dự án, mỗi dự án một repo. Bạn đang xem **Project 1*
 |:-:|---|---|---|
 | 1 | **Che779-Emulator** ← *bạn đang ở đây* | Windows | Mỗi tab một cửa sổ, điều khiển bằng Remoter |
 | 2 | [**Che779-EmulatorV2**](https://github.com/Kidtomboy/Che779-EmulatorV2) | Windows | Nhiều tab trong một cửa sổ, một tiến trình |
-| 3 | [**Che779-Linux**](https://github.com/Kidtomboy/Che779-Linux) | Linux | Gói `.deb` / `.tar.gz` cho Linux, gồm V1 + V2 + Remoter Linux |
-| 4 | [**Che779-Android**](https://github.com/Kidtomboy/Che779-Android) | Android (kèm Termux) | Chạy trực tiếp trên điện thoại bằng APK; Termux chạy V2 |
+| 3 | [**Che779-Linux**](https://github.com/Kidtomboy/Che779-Linux) | Linux + Termux | Gói `.deb` / `.tar.gz` cho Linux, gồm V1 + V2 + Remoter Linux; script Termux (Android) |
+| 4 | [**Che779-Android**](https://github.com/Kidtomboy/Che779-Android) | Android | Chạy trực tiếp trên điện thoại bằng APK |
 
 > 📌 Tên repo này từng là tên của bản Android. Bản Android nay nằm ở **Che779-Android**; các link cũ vẫn tự chuyển hướng.
 
